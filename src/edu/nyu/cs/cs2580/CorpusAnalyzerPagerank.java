@@ -171,7 +171,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     }
     System.out.println(ranks);
     for(String page : _linkHash.keySet())
-      _ranked_docs.put(page, ranks.get(_linkHash.get(page)));
+      get_ranked_docs().put(page, ranks.get(_linkHash.get(page)));
      	
     new_ranks = null;
     ranks = null;
@@ -211,7 +211,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     CorpusAnalyzerPagerank loaded = (CorpusAnalyzerPagerank) reader.readObject();
 
   
-    this._ranked_docs = loaded._ranked_docs;
+    this.set_ranked_docs(loaded.get_ranked_docs());
     loaded = null;
     System.out.println("Loaded PageRank");
     
@@ -219,8 +219,8 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
   }
 
   public Double getPagerank(String doc) {
-      if (_ranked_docs.containsKey(doc))
-	  return  _ranked_docs.get(doc);
+      if (get_ranked_docs().containsKey(doc))
+	  return  get_ranked_docs().get(doc);
       else {
 	  System.out.println("DID NOT FIND: " + doc);
 	  return 0.0;
@@ -228,5 +228,13 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
       //      return 0.0;  
 	//(_ranked_docs.containsKey(doc) ? _ranked_docs.get(doc) : 0.0);
   }
+
+public HashMap<String, Double> get_ranked_docs() {
+	return _ranked_docs;
+}
+
+public void set_ranked_docs(HashMap<String, Double> _ranked_docs) {
+	this._ranked_docs = _ranked_docs;
+}
 
 }

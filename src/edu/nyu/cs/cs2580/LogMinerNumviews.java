@@ -68,9 +68,9 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
   	    // Get Main source page link
   	    Checker.addDoc(f.getLinkSource().toLowerCase());
   	    
-        if(!_numViews.containsKey(f.getLinkSource().toLowerCase()))
+        if(! _numViews.containsKey(f.getLinkSource().toLowerCase()))
        	{
-       		_numViews.put(f.getLinkSource().toLowerCase(),0);
+       		 _numViews.put(f.getLinkSource().toLowerCase(),0);
        	}
   	    
   	    
@@ -98,7 +98,7 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
             if(splitline.length ==2)
             {
             
-            	 _numViews.put(splitline[1].toLowerCase(),_numViews.get(splitline[1].toLowerCase())+0);
+            	  _numViews.put(splitline[1].toLowerCase(), _numViews.get(splitline[1].toLowerCase())+0);
             }
             else
             {
@@ -113,15 +113,15 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
             }
             if(parse)
 	    {
-            _numViews.put(splitline[1].toLowerCase(),_numViews.get(splitline[1].toLowerCase())+num );
+           _numViews.put(splitline[1].toLowerCase(),_numViews.get(splitline[1].toLowerCase())+num );
         }
             }
           }
         }
       }
     }
-    System.out.println(_numViews.get("somebody_that_i_used_to_know"));
-    System.out.println(_numViews.size());     
+    System.out.println(get_numViews().get("somebody_that_i_used_to_know"));
+    System.out.println(get_numViews().size());     
     String indexFile = "numviews.idx";
     System.out.println("Store Numviews to: " + indexFile);
     ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(indexFile));
@@ -156,14 +156,24 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
 	
 	System.out.println("Loaded Numiews");
   
-    this._numViews = loaded._numViews;
+    this._numViews=loaded._numViews;
     loaded = null;
     
     return null;
   }
   public Integer getNumviews(String doc) {
+
 	//System.out.println(doc);
     return  (_numViews.get(doc));
+
   }
+
+public HashMap<String, Integer> get_numViews() {
+	return _numViews;
+}
+
+public void set_numViews(HashMap<String, Integer> _numViews) {
+	this._numViews = _numViews;
+}
 
 }

@@ -30,6 +30,7 @@ CLASSES = \
 	src/edu/nyu/cs/cs2580/IndexerInvertedCompressed.java \
 	src/edu/nyu/cs/cs2580/RankerConjunctive.java \
 	src/edu/nyu/cs/cs2580/Stemmer.java \
+	src/edu/nyu/cs/cs2580/Spearman.java \
 
 
 default:
@@ -43,6 +44,9 @@ index:
 
 run:
 	$(JVM) $(RUNFLAGS) edu.nyu.cs.cs2580.SearchEngine --mode=serve --port=25808 --options=conf/engine.conf 
+
+spearman:
+	$(JVM) $(RUNFLAGS) edu.nyu.cs.cs2580.Spearman  
 
 clean:
 	find . -name '*.class' -exec rm -rf {} \;
