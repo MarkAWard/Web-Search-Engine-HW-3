@@ -217,8 +217,8 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     return null;
   }
 
-  public double getPagerank(String doc) {
-    return  (_ranked_docs.containsKey(doc) ? _ranked_docs.get(doc) : 0.0);
+  public float getPagerank(String doc) {
+    return  (_ranked_docs.containsKey(doc) ? _ranked_docs.get(doc) : 0.0f);
   }
 
 }
