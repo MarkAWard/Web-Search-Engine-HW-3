@@ -467,7 +467,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 
         public int compare(Tuple<Integer, Integer> tupleA, Tuple<Integer, Integer> tupleB)
         {
-            return tupleA.getLen().compareTo(tupleB.getLen());
+            return tupleB.getLen().compareTo(tupleA.getLen());
         }
 
     };
@@ -476,13 +476,23 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 
   for (Integer key : _postings.keySet()) {
    tuples.add(new Tuple<Integer, Integer>( key, elias.get(key)));
+   //System.out.println(key, elias.get(key));
   }
 Collections.sort(tuples, comparator);
 int i = 0;
 for (Tuple<Integer, Integer> tuple : tuples)
     {
       i++;
-        System.out.println(_dictionary.get(tuple.getWord()) + " -> " + tuple.getLen());
+      String word = "_";
+      //      String word = Integer.toString(tuple.getWord());
+      for(String k : _dictionary.keySet()){
+	  if(_dictionary.get(k) == tuple.getWord()){
+	      word = k;
+	      break;
+	  }
+      }
+
+      System.out.println(i + " " + word + " -> " + tuple.getLen());
         if(i > 200)
           break;
     }
