@@ -44,7 +44,19 @@ public abstract class Indexer {
   public Indexer(Options options) {
     _options = options;
     _corpusAnalyzer = CorpusAnalyzer.Factory.getCorpusAnalyzerByOption(options);
+    try {
+		_corpusAnalyzer.load();
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
     _logMiner = LogMiner.Factory.getLogMinerByOption(options);
+    try {
+		_logMiner.load();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   }
 
   // APIs for document retrieval.

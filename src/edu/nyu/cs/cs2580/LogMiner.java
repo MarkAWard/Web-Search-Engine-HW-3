@@ -40,6 +40,7 @@ public abstract class LogMiner {
       if (options._logMinerType.equals("numviews")) {
         return new LogMinerNumviews(options);
       }
+      
       return null;
     }
   }
