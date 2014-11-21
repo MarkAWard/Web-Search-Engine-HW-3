@@ -18,6 +18,11 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ArrayList;
+
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
 
@@ -26,7 +31,25 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
  */
 public class IndexerInvertedCompressed extends Indexer implements Serializable {
 
-	 private static final long serialVersionUID = 1626440145434710491L;
+
+
+  public class Tuple<T, R> {
+    private T word;
+    private R len;
+
+    public Tuple(T t, R r) {
+      this.word = t;
+      this.len = r;
+    }
+    public R getLen() {
+      return len;
+    }
+    public T getWord() {
+      return word;
+    }
+  }
+	
+   private static final long serialVersionUID = 1626440145434710491L;
 	    
 	    private Map<String, Integer> _dictionary = new HashMap<String, Integer>();
 	    private Map<String, Vector<Integer>> _decoded = new HashMap<String, Vector<Integer>>();
@@ -437,6 +460,33 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	this._logMiner=loaded._logMiner;
 	//_logMiner.load();
 	
+
+
+    Comparator< Tuple<Integer, Integer>> comparator = new Comparator<Tuple<Integer, Integer>>()
+    {
+
+        public int compare(Tuple<Integer, Integer> tupleA, Tuple<Integer, Integer> tupleB)
+        {
+            return tupleA.getLen().compareTo(tupleB.getLen());
+        }
+
+    };
+
+  List<Tuple<Integer, Integer>> tuples = new ArrayList<Tuple<Integer, Integer>>();
+
+  for (Integer key : _postings.keySet()) {
+   tuples.add(new Tuple<Integer, Integer>( key, elias.get(key)));
+  }
+Collections.sort(tuples, comparator);
+int i = 0;
+for (Tuple<Integer, Integer> tuple : tuples)
+    {
+      i++;
+        System.out.println(_dictionary.get(tuple.getWord()) + " -> " + tuple.getLen());
+        if(i > 200)
+          break;
+    }
+
 	
 	reader.close();
 	loaded=null;
