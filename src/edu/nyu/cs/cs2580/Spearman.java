@@ -66,13 +66,13 @@ public class Spearman {
 		List list = new LinkedList(_ranked_docs.entrySet());
 		
        Collections.sort(list, new Comparator() {
-			public int compare(Object o1, Object o2)
+			public int compare(Object o2, Object o1)
 			{
                return ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue());
             }
        });
 
-       Double rank=1.0;
+       Double rank=0.0;
        Double prev=null;
        int stride=1;
        
@@ -80,7 +80,7 @@ public class Spearman {
        for (Iterator it = list.iterator(); it.hasNext();) {
               Map.Entry<String, Double> entry = (Entry<String, Double>) it.next();
               
-              System.out.println(_ranked_docs.get(entry.getKey()));
+              
               
               if(entry.getValue()==prev)
               {
@@ -121,7 +121,7 @@ public class Spearman {
             }
        });
 
-       Integer rank=1;
+       Integer rank=0;
        int stride=1;
        Integer prev = null;
        for (Iterator it = list.iterator(); it.hasNext();) {
@@ -160,30 +160,46 @@ public class Spearman {
 		//Double z = (n+1)/2;
 		Double z=0.0;
 		
+		int k=100;
+		
 		for(Map.Entry<String, Double> entry : _ranked_docs_transformed.entrySet())
 		{
+			if(k<0)
+				break;
 			
 			z += _ranked_docs_transformed.get(entry.getKey());
+			k--;
+			
 		}
-		
+		 n=100.0;
 		 z=z/n;
 		
 		System.out.println("Z: "+z);
 		
 		Double f1 = 0.0,f2=0.0,f3=0.0;
 		
-		
+		k=100;
 		
 		for(Map.Entry<String, Double> entry : _ranked_docs_transformed.entrySet())
 		{
+			if(k<0)
+				break;
 			
-		   f1 +=((_ranked_docs_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey())-z)); 
-		   f2 += ((_ranked_docs_transformed.get(entry.getKey())-z)*(_ranked_docs_transformed.get(entry.getKey())-z));
-		   f3 += ((double)((_numViews_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey())-z)));
+		f1 = f1 + 	Math.pow((_ranked_docs_transformed.get(entry.getKey()))-_numViews_transformed.get(entry.getKey()),2);
+			
+//		   f1 +=((_ranked_docs_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey())-z)); 
+//		   f2 += ((_ranked_docs_transformed.get(entry.getKey())-z)*(_ranked_docs_transformed.get(entry.getKey())-z));
+//		   f3 += ((double)((_numViews_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey())-z)));
+		   
+		   k--;
+		
 		}
 		
 		
-		return f1/(f2*f3);
+//		return f1/(f2*f3);
+		System.out.println(f1);
+		
+		return 1-((6*f1)/(n*(n*n-1)));
 		
 	}
 	
