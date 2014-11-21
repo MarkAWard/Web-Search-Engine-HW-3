@@ -83,10 +83,18 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
           splitline = line.split(" ");
 
 	    
-          if (splitline.length >=2 && Checker.checkDoc(splitline[1]) && splitline.length <=3) {
-            //System.out.println(splitline[1] + " " + splitline[2]);
+          if (splitline.length >=2 && Checker.checkDoc(splitline[1]) && splitline.length <=3)
+          {
+        	if(!_numViews.containsKey(splitline[1]))
+        	{
+        		_numViews.put(splitline[1],0);
+        	}
+        	  
             if(splitline.length ==2)
-            	 _numViews.put(splitline[1],0);
+            {
+            
+            	 _numViews.put(splitline[1],_numViews.get(splitline[1])+0);
+            }
             else
             {
             int num = 0;
@@ -100,14 +108,15 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
             }
             if(parse)
 	    {
-            _numViews.put(splitline[1],num );
+            _numViews.put(splitline[1],_numViews.get(splitline[1])+num );
             }
             }
           }
         }
       }
     }
-    System.out.println(_numViews);     
+    System.out.println(_numViews.get("Somebody_That_I_Used_to_Know"));
+    //System.out.println(_numViews);     
     String indexFile = "numviews.idx";
     System.out.println("Store Numviews to: " + indexFile);
     ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(indexFile));
