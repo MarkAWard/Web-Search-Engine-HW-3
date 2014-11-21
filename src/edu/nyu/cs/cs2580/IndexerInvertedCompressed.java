@@ -467,13 +467,8 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	
 	// get the postings list
 	
-	
-	
 	Vector<Integer> Pt=_decoded.get(t);
-	
 
-	
-	
 	// get index of last doc
 	int lt = get_lt(Pt); 
 	// done if already returned the last one

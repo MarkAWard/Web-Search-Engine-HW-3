@@ -82,13 +82,14 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
         while ((line = reader.readLine()) != null) {
           splitline = line.split(" ");
 
-	    
+          if(!_numViews.containsKey(splitline[1].toLowerCase()))
+      	{
+      		_numViews.put(splitline[1].toLowerCase(),0);
+      	}
+          
           if (splitline.length >=2 && Checker.checkDoc(splitline[1].toLowerCase()) && splitline.length <=3)
           {
-        	if(!_numViews.containsKey(splitline[1].toLowerCase()))
-        	{
-        		_numViews.put(splitline[1].toLowerCase(),0);
-        	}
+        	
         	  
             if(splitline.length ==2)
             {
