@@ -280,7 +280,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	DocumentIndexed doc = new DocumentIndexed(_documents.size());
 	doc.setTitle(title);
 	doc.setNumViews( ( (LogMinerNumviews) _logMiner).getNumviews(title));
-	doc.setPageRank(( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title));
+	doc.setPageRank( ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title));
 	doc.setUrl(url);
 	((DocumentIndexed) doc).removeAll();
 	if (( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title) > 0)

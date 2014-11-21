@@ -67,7 +67,7 @@ public class SearchEngine {
     public String _corpusAnalyzerType = null;
 
     // The specific value for lambda for PageRank.
-    public Float _lambda = null;
+    public Double _lambda = null;
 
     // Number of iterations to run for PageRank
     public Integer _iterations = null;
@@ -117,7 +117,7 @@ public class SearchEngine {
       Check(_corpusAnalyzerType != null,
           "Missing option: corpus_analyzer_type!");
       
-      _lambda = Float.valueOf( options.get("lambda") );
+      _lambda = Double.valueOf( options.get("lambda") );
       Check(_lambda != null, 
 	    "Missing option: lambda");
 

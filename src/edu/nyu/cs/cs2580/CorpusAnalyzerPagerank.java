@@ -26,7 +26,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
 
   private HashMap<Integer, HashSet<Integer> > _linkGraph = new HashMap<Integer, HashSet<Integer>>();
   private HashMap<String, Integer> _linkHash = new HashMap<String, Integer>();
-  private HashMap<String, Float> _ranked_docs = new HashMap<String, Float>();
+  private HashMap<String, Double> _ranked_docs = new HashMap<String, Double>();
 
   public CorpusAnalyzerPagerank(Options options) {
     super(options);
@@ -58,7 +58,6 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     
     String corpusDir = _options._corpusPrefix;
     final File Dir = new File(corpusDir);
-    //Document.HeuristicDocumentChecker Checker = new Document.HeuristicDocumentChecker();
      
     String link_name;
     String corresponding_links;
@@ -89,12 +88,6 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
 	    linksource.put(link_name, linkSet);
 	    _linkHash.put(link_name, num_docs);
 
-      //Checker.addDoc(link_name);
-
-//       Document doc = new Document(_ranked_docs.size());
-//       doc.setTitle(link_name);
-// //      doc.setUrl(link_name);
-//       _ranked_docs.add(doc);
 	num_docs += 1;
     }
     
@@ -141,12 +134,12 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     // total number of pages included in graph
     int nnodes = _linkGraph.keySet().size();
     // initial value for beginning of each iteration
-    float init = (float) (1 - _options._lambda)/nnodes;
-    //float init = 0.02f;
+    Double init = (1.0 - _options._lambda)/nnodes;
+    //Double init = 0.02f;
     // initialize pagerank of all pages to 0.5 maybe go bigger?
-    ArrayList<Float> ranks = new ArrayList<Float>( Collections.nCopies(nnodes, (float) 1) );
+    ArrayList<Double> ranks = new ArrayList<Double>( Collections.nCopies(nnodes, 1.0) );
     // array to track pageranks as we update 
-    ArrayList<Float> new_ranks = new ArrayList<Float>( Collections.nCopies(nnodes, init) ); 
+    ArrayList<Double> new_ranks = new ArrayList<Double>( Collections.nCopies(nnodes, init) ); 
 
     for (int iters = 0; iters < _options._iterations; iters++) {
       // reinitialize if its not the first iteration
@@ -156,14 +149,14 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
       // go through every webpage in the graph
       for (Integer node : _linkGraph.keySet()) {
         HashSet<Integer> links = _linkGraph.get(node);
-	float distribute_rank = (float) _options._lambda; 
+	Double distribute_rank = _options._lambda; 
 	if (links.size()>0)
 	{
-        	 distribute_rank = (float) _options._lambda * (ranks.get(node)) / links.size();
+        	 distribute_rank =  _options._lambda * (ranks.get(node)) / links.size();
 	}
         // increase the pagerank of every page this one points to by the above amount
         for (Integer link : links) {
-          float tmp = new_ranks.get(link);
+          Double tmp = new_ranks.get(link);
           new_ranks.set(link, tmp + distribute_rank);	
         }
       }
@@ -222,8 +215,8 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     return null;
   }
 
-  public float getPagerank(String doc) {
-    return  (_ranked_docs.containsKey(doc) ? _ranked_docs.get(doc) : 0.0f);
+  public Double getPagerank(String doc) {
+    return  (_ranked_docs.containsKey(doc) ? _ranked_docs.get(doc) : 0.0);
   }
 
 }
