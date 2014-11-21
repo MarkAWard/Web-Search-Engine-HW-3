@@ -69,12 +69,12 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	    
 	      // special case for testing with corpus.tsv
 	      if (fileEntry.getName().endsWith("corpus.tsv") ) {
-		  System.out.println(fileEntry.getName());
+		  //System.out.println(fileEntry.getName());
 		  BufferedReader reader = new BufferedReader(new FileReader(fileEntry));
 		  try {
 		      String line = null;
 		      while ((line = reader.readLine()) != null) {
-			  System.out.println("Document" + n_doc);
+			  //System.out.println("Document" + n_doc);
 			  line = DocReader.createFileInput(line);
 			  processDocument(line);
 			  _term_position.clear();
@@ -87,7 +87,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 		  }
 	      }
 	      else {
-		  System.out.println(n_doc + "   " + fileEntry.getName());
+		  //System.out.println(n_doc + "   " + fileEntry.getName());
 		  
 		  n_doc++;
 		  String nextDoc = DocReader.createFileInput(fileEntry);
@@ -280,11 +280,17 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	DocumentIndexed doc = new DocumentIndexed(_documents.size());
 	doc.setTitle(title);
 	doc.setNumViews( ( (LogMinerNumviews)_logMiner).getNumviews(title.toLowerCase()));
-	doc.setPageRank( ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title.toLowerCase()));
+	doc.setPageRank( ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title));
 	doc.setUrl(url);
 	((DocumentIndexed) doc).removeAll();
-	//if (( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title) > 0)
-	System.out.println(( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase()));
+	if (( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title) > 0.0 || ( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase())> 0)
+	{
+	System.out.println(title);
+	System.out.printf("Pagerank: %.8f \t NumViews: %d", ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title), ( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase()));
+	System.out.println("-");
+	
+	}
+	
 
 	// add the document
 	_documents.add(doc); 
