@@ -98,14 +98,14 @@ public class Spearman {
        }
        
        list = new LinkedList(_ranked_docs_transformed.entrySet());
-       int k=20;
+//       int k=20;
        for (Iterator it = list.iterator(); it.hasNext();) {
-    	   k--;
+//    	   k--;
            Map.Entry<String, Integer> entry = (Entry<String, Integer>) it.next();
         
-           if(k>0)
-           System.out.println("Key: "+ entry.getKey() +"PageRank:"+ _ranked_docs.get(entry.getKey())+ " Rank: "+entry.getValue());
-           
+//           if(k>0)
+//           System.out.println("Key: "+ entry.getKey() +"PageRank:"+ _ranked_docs.get(entry.getKey())+ " Rank: "+entry.getValue());
+//           
        }
 	}
 
@@ -140,14 +140,14 @@ public class Spearman {
               }
               prev=entry.getValue();
        }
-       int k=20;
+//       int k=20;
        list = new LinkedList(_numViews_transformed.entrySet());
        for (Iterator it = list.iterator(); it.hasNext();) {
            Map.Entry<String, Integer> entry = (Entry<String, Integer>) it.next();
-        k--;
-        if(k>0)
-           System.out.println("Key: "+ entry.getKey() + "NumViews:"+ _numViews.get(entry.getKey()) +" Rank: "+entry.getValue());
-           
+//        k--;
+//        if(k>0)
+//           System.out.println("Key: "+ entry.getKey() + "NumViews:"+ _numViews.get(entry.getKey()) +" Rank: "+entry.getValue());
+//           
        }
        
 		
@@ -160,38 +160,38 @@ public class Spearman {
 		//Double z = (n+1)/2;
 		Double z=0.0;
 		
-		int k=100;
+		//int k=100;
 		
 		for(Map.Entry<String, Double> entry : _ranked_docs_transformed.entrySet())
 		{
-			if(k<0)
-				break;
+//			if(k<0)
+//				break;
 			
 			z += _ranked_docs_transformed.get(entry.getKey());
-			k--;
+//			k--;
 			
 		}
-		 n=10.0;
+//		 n=10.0;
 		 z=z/n;
 		
 		System.out.println("Z: "+z);
 		
 		Double f1 = 0.0,f2=0.0,f3=0.0;
 		
-		k=100;
+//		k=100;
 		
 		for(Map.Entry<String, Double> entry : _ranked_docs_transformed.entrySet())
 		{
-			if(k<0)
-				break;
+//			if(k<0)
+//				break;
 			
 		//f1 = f1 + 	Math.pow((_ranked_docs_transformed.get(entry.getKey()))-_numViews_transformed.get(entry.getKey()),2);
 			
-		   f1 +=((_ranked_docs_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey())-z)); 
+		   f1 +=((_ranked_docs_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey().toLowerCase())-z)); 
 		   f2 += ((_ranked_docs_transformed.get(entry.getKey())-z)*(_ranked_docs_transformed.get(entry.getKey())-z));
-		   f3 += ((double)((_numViews_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey())-z)));
+		   f3 += ((double)((_numViews_transformed.get(entry.getKey().toLowerCase())-z)*(_numViews_transformed.get(entry.getKey().toLowerCase())-z)));
 		   
-		   k--;
+		 // k--;
 		
 		}
 		
@@ -205,7 +205,6 @@ public class Spearman {
 	
 	public static void main(String[] args) throws FileNotFoundException, ClassNotFoundException, IOException
 	{
-		
 		parse_CommandLine(args);
 		load_Pageranks();
 		load_Numviews();
