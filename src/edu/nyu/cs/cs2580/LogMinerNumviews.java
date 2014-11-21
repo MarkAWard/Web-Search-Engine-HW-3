@@ -66,7 +66,7 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
   	    HeuristicLinkExtractor f = new HeuristicLinkExtractor(fileEntry);
   	    
   	    // Get Main source page link
-  	    Checker.addDoc(f.getLinkSource());
+  	    Checker.addDoc(f.getLinkSource().toLowerCase());
         }
 	
     }
@@ -81,7 +81,6 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
         reader = new BufferedReader(new FileReader(logEntry));
         while ((line = reader.readLine()) != null) {
           splitline = line.split(" ");
-
 	    
           if (splitline.length >=2 && Checker.checkDoc(splitline[1]) && splitline.length <=3)
           {
@@ -109,7 +108,7 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
             if(parse)
 	    {
             _numViews.put(splitline[1],_numViews.get(splitline[1])+num );
-            }
+        }
             }
           }
         }
