@@ -95,7 +95,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
 //       doc.setTitle(link_name);
 // //      doc.setUrl(link_name);
 //       _ranked_docs.add(doc);
-
+	num_docs += 1;
     }
     
   }
@@ -114,11 +114,11 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     for (String link_values : links) {
       //Add to the adjacency list  (HashSet) if present in corpus
 	    if (linksource.containsKey(link_values))
-        linkAdjSet.add(_linkHash.get(link_values));
+        	linkAdjSet.add(_linkHash.get(link_values));
     }
     _linkGraph.put(_linkHash.get(key), linkAdjSet);
   }
-
+	System.out.println(_linkGraph);
   return;
 } 
     /**
@@ -143,7 +143,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     // initial value for beginning of each iteration
     float init = (float) (1 - _options._lambda)/nnodes;
     // initialize pagerank of all pages to 0.5 maybe go bigger?
-    ArrayList<Float> ranks = new ArrayList<Float>( Collections.nCopies(nnodes, (float) .5) );
+    ArrayList<Float> ranks = new ArrayList<Float>( Collections.nCopies(nnodes, (float) 0.02) );
     // array to track pageranks as we update 
     ArrayList<Float> new_ranks = new ArrayList<Float>( Collections.nCopies(nnodes, init) ); 
 
@@ -166,7 +166,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
       ranks = new_ranks;
       //System.out.println(ranks);
     }
-
+    System.out.println(ranks);
     for(String page : _linkHash.keySet())
       _ranked_docs.put(page, ranks.get(_linkHash.get(page)));
      	

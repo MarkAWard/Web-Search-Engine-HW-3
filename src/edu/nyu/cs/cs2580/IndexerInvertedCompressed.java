@@ -283,7 +283,8 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	doc.setPageRank(( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title));
 	doc.setUrl(url);
 	((DocumentIndexed) doc).removeAll();
-	System.out.println(url);
+	if (( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title) > 0)
+		System.out.println(( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title));
 
 	// add the document
 	_documents.add(doc); 
@@ -338,7 +339,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
              
             if( positions.get(i)-last<0)
             {
-            	System.out.println(positions.get(i)+ " "+ last + " "+ positions);
+            	//System.out.println(positions.get(i)+ " "+ last + " "+ positions);
             	
             	for(String l:_dictionary.keySet())
             	{
@@ -434,8 +435,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	this.elias=loaded.elias;
 	reader.close();
 	loaded=null;
-	System.out.println(Integer.toString(_numDocs) + " documents loaded " +
-			   "with " + Long.toString(_totalTermFrequency) + " terms!"); 
+	//System.out.println(Integer.toString(_numDocs) + " documents loaded " + "with " + Long.toString(_totalTermFrequency) + " terms!"); 
 	
     }
 
