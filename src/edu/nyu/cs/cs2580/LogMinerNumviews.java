@@ -72,7 +72,7 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
     }
     for (final File logEntry : DirLog.listFiles()) {
       
-      if ( !logEntry.isDirectory() ) {
+      if ( !logEntry.isDirectory()) {
         
         // dont read hidden files
         if(logEntry.isHidden())
@@ -82,7 +82,7 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
         while ((line = reader.readLine()) != null) {
           splitline = line.split(" ");
 	    
-          if (splitline.length >=2 && Checker.checkDoc(splitline[1]) && splitline.length <=3)
+          if (splitline.length >=2 && Checker.checkDoc(splitline[1].toLowerCase()) && splitline.length <=3)
           {
         	if(!_numViews.containsKey(splitline[1]))
         	{
