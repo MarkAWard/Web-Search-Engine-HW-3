@@ -287,7 +287,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	if(( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase())> 0)
 	{
 	System.out.println(title);
-	System.out.printf("Pagerank: %.8f \t NumViews: %d", ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title), ( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase()));
+	System.out.printf("Pagerank: %.8f \t NumViews: %d\n", ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title), ( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase()));
 	System.out.println("-");
 	
 	}
