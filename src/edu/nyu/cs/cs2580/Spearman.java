@@ -185,21 +185,21 @@ public class Spearman {
 			if(k<0)
 				break;
 			
-		f1 = f1 + 	Math.pow((_ranked_docs_transformed.get(entry.getKey()))-_numViews_transformed.get(entry.getKey()),2);
+		//f1 = f1 + 	Math.pow((_ranked_docs_transformed.get(entry.getKey()))-_numViews_transformed.get(entry.getKey()),2);
 			
-//		   f1 +=((_ranked_docs_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey())-z)); 
-//		   f2 += ((_ranked_docs_transformed.get(entry.getKey())-z)*(_ranked_docs_transformed.get(entry.getKey())-z));
-//		   f3 += ((double)((_numViews_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey())-z)));
+		   f1 +=((_ranked_docs_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey())-z)); 
+		   f2 += ((_ranked_docs_transformed.get(entry.getKey())-z)*(_ranked_docs_transformed.get(entry.getKey())-z));
+		   f3 += ((double)((_numViews_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey())-z)));
 		   
 		   k--;
 		
 		}
 		
 		
-//		return f1/(f2*f3);
-		System.out.println(f1);
+		return f1/(f2*f3);
+		//System.out.println(f1);
 		
-		return 1-((6*f1)/(n*(n*n-1)));
+		//return 1-((6*f1)/(n*(n*n-1)));
 		
 	}
 	
