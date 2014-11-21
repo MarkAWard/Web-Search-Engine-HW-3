@@ -81,18 +81,19 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
         reader = new BufferedReader(new FileReader(logEntry));
         while ((line = reader.readLine()) != null) {
           splitline = line.split(" ");
+
 	    
           if (splitline.length >=2 && Checker.checkDoc(splitline[1].toLowerCase()) && splitline.length <=3)
           {
-        	if(!_numViews.containsKey(splitline[1]))
+        	if(!_numViews.containsKey(splitline[1].toLowerCase()))
         	{
-        		_numViews.put(splitline[1],0);
+        		_numViews.put(splitline[1].toLowerCase(),0);
         	}
         	  
             if(splitline.length ==2)
             {
             
-            	 _numViews.put(splitline[1],_numViews.get(splitline[1])+0);
+            	 _numViews.put(splitline[1].toLowerCase(),_numViews.get(splitline[1].toLowerCase())+0);
             }
             else
             {
@@ -107,14 +108,14 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
             }
             if(parse)
 	    {
-            _numViews.put(splitline[1],_numViews.get(splitline[1])+num );
+            _numViews.put(splitline[1].toLowerCase(),_numViews.get(splitline[1].toLowerCase())+num );
         }
             }
           }
         }
       }
     }
-    //System.out.println(_numViews.get("Somebody_That_I_Used_to_Know"));
+    System.out.println(_numViews.get("somebody_that_i_used_to_know"));
     System.out.println(_numViews.size());     
     String indexFile = "numviews.idx";
     System.out.println("Store Numviews to: " + indexFile);
