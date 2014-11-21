@@ -41,22 +41,13 @@ public abstract class Indexer {
   public Indexer() { }
 
   // The real constructor
-  public Indexer(Options options) {
+  public Indexer(Options options) throws IOException, ClassNotFoundException {
     _options = options;
     _corpusAnalyzer = CorpusAnalyzer.Factory.getCorpusAnalyzerByOption(options);
-    try {
 		_corpusAnalyzer.load();
-	} catch (IOException | ClassNotFoundException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
+
     _logMiner = LogMiner.Factory.getLogMinerByOption(options);
-    try {
 		_logMiner.load();
-	} catch (IOException | ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
   }
 
   // APIs for document retrieval.
@@ -151,7 +142,7 @@ public abstract class Indexer {
    * provided {@code options}.
    */
   public static class Factory {
-    public static Indexer getIndexerByOption(Options options) {
+    public static Indexer getIndexerByOption(Options options) throws IOException, ClassNotFoundException {
       if (options._indexerType.equals("fullscan")) {
         return new IndexerFullScan(options);
       } else if (options._indexerType.equals("inverted-doconly")) {

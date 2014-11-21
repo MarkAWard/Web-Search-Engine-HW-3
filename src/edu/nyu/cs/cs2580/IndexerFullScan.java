@@ -50,7 +50,7 @@ class IndexerFullScan extends Indexer implements Serializable {
   public IndexerFullScan() { }
   
   // The real constructor
-  public IndexerFullScan(Options option) {
+  public IndexerFullScan(Options option) throws IOException, ClassNotFoundException {
     super(option);
     System.out.println("Using Indexer: " + this.getClass().getSimpleName());
   }

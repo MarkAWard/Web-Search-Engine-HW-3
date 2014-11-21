@@ -45,7 +45,7 @@ public class IndexerInvertedOccurrence extends Indexer implements Serializable {
     private HashMap<Integer,Vector<Integer>> _skip_pointer=new HashMap<Integer,Vector<Integer>>();
     private HashMap<Integer,Vector<Integer>> _term_list=new HashMap<Integer,Vector<Integer>>();
     
-    public IndexerInvertedOccurrence(Options options) {
+    public IndexerInvertedOccurrence(Options options) throws IOException, ClassNotFoundException {
 	super(options);
 	System.out.println("Using Indexer: " + this.getClass().getSimpleName());
     }

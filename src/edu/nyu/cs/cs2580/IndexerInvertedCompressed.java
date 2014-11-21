@@ -45,7 +45,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	    private HashMap<Integer,Vector<Integer>> _term_list=new HashMap<Integer,Vector<Integer>>();
 	    
 	
-  public IndexerInvertedCompressed(Options options) {
+  public IndexerInvertedCompressed(Options options) throws IOException, ClassNotFoundException {
     super(options);
     System.out.println("Using Indexer: " + this.getClass().getSimpleName());
   }

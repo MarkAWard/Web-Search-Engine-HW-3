@@ -42,7 +42,7 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable {
 	private Map<String, Integer> cache = new HashMap<String, Integer>();
 	private Integer c_t = -1;
 	
-  public IndexerInvertedDoconly(Options options) {
+  public IndexerInvertedDoconly(Options options) throws IOException, ClassNotFoundException {
     super(options);
     System.out.println("Using Indexer: " + this.getClass().getSimpleName());
   }

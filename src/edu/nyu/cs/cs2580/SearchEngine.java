@@ -197,7 +197,7 @@ public class SearchEngine {
     return;
   }
   
-  private static void startIndexing() throws IOException {
+  private static void startIndexing() throws IOException, ClassNotFoundException {
     Indexer indexer = Indexer.Factory.getIndexerByOption(SearchEngine.OPTIONS);
     Check(indexer != null,
         "Indexer " + SearchEngine.OPTIONS._indexerType + " not found!");
