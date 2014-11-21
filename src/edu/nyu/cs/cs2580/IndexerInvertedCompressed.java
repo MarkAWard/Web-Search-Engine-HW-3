@@ -283,8 +283,8 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	doc.setPageRank( ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title));
 	doc.setUrl(url);
 	((DocumentIndexed) doc).removeAll();
-	if (( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title) > 0)
-		System.out.println(( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title));
+	//if (( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title) > 0)
+	System.out.println(( (LogMinerNumviews) _logMiner).getNumviews(title));
 
 	// add the document
 	_documents.add(doc); 

@@ -111,7 +111,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     }
     _linkGraph.put(_linkHash.get(key), linkAdjSet);
   }
-	System.out.println(_linkGraph);
+	//System.out.println(_linkGraph);
   return;
 } 
     /**
@@ -139,29 +139,34 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     // initialize pagerank of all pages to 0.5 maybe go bigger?
     ArrayList<Double> ranks = new ArrayList<Double>( Collections.nCopies(nnodes, 1.0) );
     // array to track pageranks as we update 
-    ArrayList<Double> new_ranks = new ArrayList<Double>( Collections.nCopies(nnodes, init) ); 
+    ArrayList<Double> new_ranks = new ArrayList<Double>( Collections.nCopies(nnodes, 0.0) ); 
 
     for (int iters = 0; iters < _options._iterations; iters++) {
       // reinitialize if its not the first iteration
+	//System.out.println("INIT: " + init);
+
       for (int i = 0; i < nnodes && iters > 0; i++) 
-        new_ranks.set(i, init);
+        new_ranks.set(i, 0.0);
 
       // go through every webpage in the graph
       for (Integer node : _linkGraph.keySet()) {
+	  //System.out.println(ranks.get(node));
         HashSet<Integer> links = _linkGraph.get(node);
-	Double distribute_rank = _options._lambda; 
-	if (links.size()>0)
-	{
-        	 distribute_rank =  _options._lambda * (ranks.get(node)) / links.size();
+	Double weight = _options._lambda * (1.0 / links.size());
+	//System.out.println("WEIGHT:" + weight);
+	
+	for (int i = 0; i < nnodes; i++) {
+	    Double tmp = new_ranks.get(i);
+	    //System.out.println("node: " + node + "i: " + i + "   " + tmp);
+	    if (links.contains(i))
+		new_ranks.set(i, tmp + (init + weight) * ranks.get(node));
+	    else 
+		new_ranks.set(i, tmp + init * ranks.get(node));
 	}
-        // increase the pagerank of every page this one points to by the above amount
-        for (Integer link : links) {
-          Double tmp = new_ranks.get(link);
-          new_ranks.set(link, tmp + distribute_rank);	
-        }
+	
       }
       // update the pageranks and repeat
-      ranks = new_ranks;
+      ranks = new ArrayList<Double>( new_ranks );
       //System.out.println(ranks);
     }
     System.out.println(ranks);
