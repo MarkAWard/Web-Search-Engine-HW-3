@@ -124,7 +124,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 			   "Indexed " + Integer.toString(_numDocs) + " docs with " +
 			   Long.toString(_totalTermFrequency) + " terms.");
 	
-	String indexFile = _options._indexPrefix + "/corpus.idx";
+	String indexFile = _options._indexPrefix +"/corpus.idx";
 	System.out.println("Store index to: " + indexFile);
 	ObjectOutputStream writer =
 	    new ObjectOutputStream(new FileOutputStream(indexFile));
@@ -286,9 +286,9 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	//if (( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title) > 0.0 || 
 	if(( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase())> 0)
 	{
-	System.out.println(title);
-	System.out.printf("Pagerank: %.8f \t NumViews: %d\n", ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title), ( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase()));
-	System.out.println("-");
+	//System.out.println(title);
+	//System.out.printf("Pagerank: %.8f \t NumViews: %d", ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title), ( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase()));
+	//System.out.println("-");
 	
 	}
 	
@@ -416,7 +416,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
     @Override
     public void loadIndex() throws IOException, ClassNotFoundException {
 	
-	String indexFile = _options._indexPrefix + "/corpus.idx";
+	String indexFile = _options._indexPrefix+"/corpus.idx";
 	System.out.println("Load index from: " + indexFile);
 
 	// read in the index file
@@ -440,11 +440,11 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	this._termCorpusFrequency = loaded._termCorpusFrequency;
 	this._termDocFrequency = loaded._termDocFrequency;
 	this.elias=loaded.elias;
-	
+	System.out.println("pppp");
 	this._corpusAnalyzer=loaded._corpusAnalyzer;
-	_corpusAnalyzer.load();
+	//_corpusAnalyzer.load();
 	this._logMiner=loaded._logMiner;
-	_logMiner.load();
+	//_logMiner.load();
 	
 	
 	reader.close();
@@ -467,8 +467,13 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	
 	// get the postings list
 	
+	
+	
 	Vector<Integer> Pt=_decoded.get(t);
+	
 
+	
+	
 	// get index of last doc
 	int lt = get_lt(Pt); 
 	// done if already returned the last one
