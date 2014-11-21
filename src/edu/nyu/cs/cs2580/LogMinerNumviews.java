@@ -120,7 +120,7 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
         }
       }
     }
-    System.out.println(get_numViews().get("somebody_that_i_used_to_know"));
+    //    System.out.println(get_numViews().get("somebody_that_i_used_to_know"));
     System.out.println(get_numViews().size());     
     String indexFile = "numviews.idx";
     System.out.println("Store Numviews to: " + indexFile);

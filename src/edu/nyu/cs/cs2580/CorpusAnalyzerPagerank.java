@@ -76,12 +76,12 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
 	    HeuristicLinkExtractor f = new HeuristicLinkExtractor(fileEntry);
 	    
 	    // Get Main source page link
-	    link_name= f.getLinkSource(); //.toLowerCase();
+	    link_name= f.getLinkSource().toLowerCase();
 	    
 	    ArrayList<String> linkList = new ArrayList<String>();
 	    // Get all links (Page names) present in the source page
 	    while ( (corresponding_links = f.getNextInCorpusLinkTarget()) != null)
-        linkList.add(corresponding_links);
+        linkList.add(corresponding_links.toLowerCase());
 	    
 	    // Put the array list of Strings (Links in source page into a hash map)
 	    HashSet<String> linkSet = new HashSet<String>(linkList);
@@ -111,7 +111,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     }
     _linkGraph.put(_linkHash.get(key), linkAdjSet);
   }
-	//System.out.println(_linkGraph);
+  //  System.out.println(_linkGraph);
   return;
 } 
     /**
@@ -169,7 +169,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
       ranks = new ArrayList<Double>( new_ranks );
       //System.out.println(ranks);
     }
-    System.out.println(ranks);
+    //    System.out.println(ranks);
     for(String page : _linkHash.keySet())
       get_ranked_docs().put(page, ranks.get(_linkHash.get(page)));
      	
