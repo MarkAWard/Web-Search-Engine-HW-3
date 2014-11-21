@@ -142,8 +142,9 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     int nnodes = _linkGraph.keySet().size();
     // initial value for beginning of each iteration
     float init = (float) (1 - _options._lambda)/nnodes;
+    //float init = 0.02f;
     // initialize pagerank of all pages to 0.5 maybe go bigger?
-    ArrayList<Float> ranks = new ArrayList<Float>( Collections.nCopies(nnodes, (float) 0.02) );
+    ArrayList<Float> ranks = new ArrayList<Float>( Collections.nCopies(nnodes, (float) 1) );
     // array to track pageranks as we update 
     ArrayList<Float> new_ranks = new ArrayList<Float>( Collections.nCopies(nnodes, init) ); 
 
@@ -155,7 +156,11 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
       // go through every webpage in the graph
       for (Integer node : _linkGraph.keySet()) {
         HashSet<Integer> links = _linkGraph.get(node);
-        float distribute_rank = (float) _options._lambda * (ranks.get(node)) / links.size();
+	float distribute_rank = (float) _options._lambda; 
+	if (links.size()>0)
+	{
+        	 distribute_rank = (float) _options._lambda * (ranks.get(node)) / links.size();
+	}
         // increase the pagerank of every page this one points to by the above amount
         for (Integer link : links) {
           float tmp = new_ranks.get(link);
