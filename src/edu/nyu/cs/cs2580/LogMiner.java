@@ -29,7 +29,7 @@ public abstract class LogMiner {
 
   // Loads the stored mining results computed by the compute function above.
   // Called during indexing mode.
-  public abstract Object load() throws IOException;
+  public abstract Object load() throws IOException, ClassNotFoundException;
 
   /**
    * All LogMiners must be created through this factory class based on

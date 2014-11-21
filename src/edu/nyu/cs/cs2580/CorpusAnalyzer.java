@@ -106,7 +106,7 @@ public abstract class CorpusAnalyzer {
 
   // Loads the stored analysis results computed by the compute function above.
   // Called during indexing mode.
-  public abstract Object load() throws IOException;
+  public abstract Object load() throws IOException, ClassNotFoundException;
 
   /**
    * All CorpusAnalyzers must be created through this factory class based on

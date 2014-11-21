@@ -46,14 +46,14 @@ public abstract class Indexer {
     _corpusAnalyzer = CorpusAnalyzer.Factory.getCorpusAnalyzerByOption(options);
     try {
 		_corpusAnalyzer.load();
-	} catch (IOException e1) {
+	} catch (IOException | ClassNotFoundException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	}
     _logMiner = LogMiner.Factory.getLogMinerByOption(options);
     try {
 		_logMiner.load();
-	} catch (IOException e) {
+	} catch (IOException | ClassNotFoundException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}

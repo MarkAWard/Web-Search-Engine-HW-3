@@ -200,7 +200,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
    * @throws IOException
    */
   @Override
-  public Object load() throws IOException {
+  public Object load() throws IOException, ClassNotFoundException {
     System.out.println("Loading using " + this.getClass().getName());
 
     String indexFile = "pageranks.idx";
@@ -208,12 +208,8 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
 
     // read in the index file
     ObjectInputStream reader = new ObjectInputStream(new FileInputStream(indexFile));
-    CorpusAnalyzerPagerank loaded = null;
-	try {
-		loaded = (CorpusAnalyzerPagerank) reader.readObject();
-	} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-	}
+    CorpusAnalyzerPagerank loaded = (CorpusAnalyzerPagerank) reader.readObject();
+
   
     this._ranked_docs = loaded._ranked_docs;
     loaded = null;

@@ -139,7 +139,7 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
    * @throws IOException
    */
   @Override
-  public Object load() throws IOException {
+  public Object load() throws IOException,ClassNotFoundException {
     System.out.println("Loading using " + this.getClass().getName());
 
     String indexFile = "numviews.idx";
@@ -147,13 +147,10 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
 
     // read in the index file
     ObjectInputStream reader = new ObjectInputStream(new FileInputStream(indexFile));
-    LogMinerNumviews loaded = null;
-	try {
-		loaded = (LogMinerNumviews) reader.readObject();
-	} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+  
+
+	LogMinerNumviews loaded = (LogMinerNumviews) reader.readObject();
+
   
     this._numViews = loaded._numViews;
     loaded = null;
