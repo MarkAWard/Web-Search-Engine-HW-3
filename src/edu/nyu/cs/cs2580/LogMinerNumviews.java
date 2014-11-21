@@ -1,10 +1,12 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.File;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import java.util.HashMap;
 import edu.nyu.cs.cs2580.CorpusAnalyzer.HeuristicLinkExtractor;
 import edu.nyu.cs.cs2580.Document.HeuristicDocumentChecker;
 import edu.nyu.cs.cs2580.SearchEngine.Options;
+
 import java.io.Serializable;
 /**
  * @CS2580: Implement this class for HW3.
@@ -135,7 +138,13 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
 
     // read in the index file
     ObjectInputStream reader = new ObjectInputStream(new FileInputStream(indexFile));
-    CorpusAnalyzerPagerank loaded = (CorpusAnalyzerPagerank) reader.readObject();
+    LogMinerNumviews loaded = null;
+	try {
+		loaded = (LogMinerNumviews) reader.readObject();
+	} catch (ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   
     this._numViews = loaded._numViews;
     loaded = null;

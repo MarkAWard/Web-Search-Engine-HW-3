@@ -209,13 +209,11 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
 	try {
 		loaded = (CorpusAnalyzerPagerank) reader.readObject();
 	} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
   
     this._ranked_docs = loaded._ranked_docs;
     loaded = null;
-
     return null;
   }
 
