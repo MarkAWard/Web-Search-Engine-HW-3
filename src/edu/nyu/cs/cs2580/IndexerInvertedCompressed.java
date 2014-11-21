@@ -275,6 +275,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	String url = s.next();
 	
 	s.close();
+
 	
 	// create the document
 	DocumentIndexed doc = new DocumentIndexed(_documents.size());
@@ -283,15 +284,14 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	doc.setPageRank( ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title));
 	doc.setUrl(url);
 	((DocumentIndexed) doc).removeAll();
-	//if (( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title) > 0.0 || 
+	/*
 	if(( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase())> 0)
 	{
-	System.out.println(title);
-	System.out.printf("Pagerank: %.8f \t NumViews: %d\n", ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title), ( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase()));
+	    	System.out.printf("Pagerank: %.8f \t NumViews: %d\n", ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title), ( (LogMinerNumviews) _logMiner).getNumviews(title.toLowerCase()));
 	System.out.println("-");
 	
 	}
-	
+	*/
 
 	// add the document
 	_documents.add(doc); 

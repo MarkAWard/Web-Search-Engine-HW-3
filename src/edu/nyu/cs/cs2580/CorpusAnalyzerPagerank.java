@@ -213,6 +213,8 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
   
     this._ranked_docs = loaded._ranked_docs;
     loaded = null;
+    System.out.println("Loaded PageRank");
+    
     return null;
   }
 
