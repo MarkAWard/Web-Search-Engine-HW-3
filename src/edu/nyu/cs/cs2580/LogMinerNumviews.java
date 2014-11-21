@@ -147,10 +147,9 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
 
     // read in the index file
     ObjectInputStream reader = new ObjectInputStream(new FileInputStream(indexFile));
-  
-
 	LogMinerNumviews loaded = (LogMinerNumviews) reader.readObject();
-
+	
+	System.out.println("LOaded");
   
     this._numViews = loaded._numViews;
     loaded = null;
