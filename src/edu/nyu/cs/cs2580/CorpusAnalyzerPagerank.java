@@ -76,7 +76,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
 	    HeuristicLinkExtractor f = new HeuristicLinkExtractor(fileEntry);
 	    
 	    // Get Main source page link
-	    link_name= f.getLinkSource();
+	    link_name= f.getLinkSource().toLowerCase();
 	    
 	    ArrayList<String> linkList = new ArrayList<String>();
 	    // Get all links (Page names) present in the source page
