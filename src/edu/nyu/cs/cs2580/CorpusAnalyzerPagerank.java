@@ -62,6 +62,9 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     String link_name;
     String corresponding_links;
     HashMap<String, HashSet<String> > linksource = new HashMap<String, HashSet<String>>();
+    HashSet<String> dot_html_pages = new HashSet<String>();
+    HashMap<Integer, Integer> redirects_to = new HashMap<Integer, Integer>();
+
     int num_docs = 0;
     System.out.println("Extracting Links");
     for (final File fileEntry : Dir.listFiles()) {
@@ -77,11 +80,13 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
 	    
 	    // Get Main source page link
 	    link_name= f.getLinkSource().toLowerCase();
+	    if(link_name.endsWith(".html"))
+		dot_html_pages.add(link_name);
 	    
 	    ArrayList<String> linkList = new ArrayList<String>();
 	    // Get all links (Page names) present in the source page
 	    while ( (corresponding_links = f.getNextInCorpusLinkTarget()) != null)
-        linkList.add(corresponding_links.toLowerCase());
+		linkList.add(corresponding_links.toLowerCase());
 	    
 	    // Put the array list of Strings (Links in source page into a hash map)
 	    HashSet<String> linkSet = new HashSet<String>(linkList);
@@ -93,8 +98,17 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
     
   }
   System.out.println(_linkHash.size());
+  
   // Create a local map variable (efficient to iterate over)
   System.out.println("Creating Graph");
+
+  for (String page : dot_html_pages) {
+      String redirect_from = page.substring(0, page.length() - 5);
+      if( _linkHash.containsKey(redirect_from))
+	  redirects_to.put( _linkHash.get(redirect_from), _linkHash.get(page) );
+  }
+  System.out.println(redirects_to);
+
   // Iterate over Map keys
   for (String key : linksource.keySet()) {
     HashSet<String> links = new HashSet<String>();
@@ -105,13 +119,26 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
 
     //Iterate over the links in the set
     for (String link_values : links) {
-      //Add to the adjacency list  (HashSet) if present in corpus
-	    if (linksource.containsKey(link_values))
-        	linkAdjSet.add(_linkHash.get(link_values));
+      //Add to the adjacency list if present in our corpus
+	if (linksource.containsKey(link_values)) {
+	    
+	    Integer outlink = _linkHash.get(link_values);
+	    // check for redirect 
+	    if (redirects_to.containsKey(outlink)) {
+		// make sure we are not following a redirect in a circle back to key
+		if(_linkHash.get(key) != redirects_to.get(outlink))
+		    linkAdjSet.add( redirects_to.get(outlink) );
+		// else do NOT add a loop on this page and remove the redirect page 
+	    }
+	    else {
+		linkAdjSet.add(_linkHash.get(link_values));
+	    }
+	}
     }
     _linkGraph.put(_linkHash.get(key), linkAdjSet);
+    System.out.println(_linkHash.get(key) + "  " + key);
   }
-  //  System.out.println(_linkGraph);
+  System.out.println(_linkGraph);
   return;
 } 
     /**
@@ -169,7 +196,7 @@ public class CorpusAnalyzerPagerank extends CorpusAnalyzer implements Serializab
       ranks = new ArrayList<Double>( new_ranks );
       //System.out.println(ranks);
     }
-    //    System.out.println(ranks);
+    System.out.println(ranks);
     for(String page : _linkHash.keySet())
       get_ranked_docs().put(page, ranks.get(_linkHash.get(page)));
      	
