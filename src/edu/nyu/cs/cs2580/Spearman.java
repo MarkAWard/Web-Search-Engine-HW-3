@@ -171,7 +171,7 @@ public class Spearman {
 			k--;
 			
 		}
-		 n=100.0;
+		 n=10.0;
 		 z=z/n;
 		
 		System.out.println("Z: "+z);
