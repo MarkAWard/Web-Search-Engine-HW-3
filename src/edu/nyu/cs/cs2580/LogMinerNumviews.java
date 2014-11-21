@@ -157,7 +157,7 @@ public class LogMinerNumviews extends LogMiner implements Serializable {
     return null;
   }
   public Integer getNumviews(String doc) {
-    return  (_numViews.containsKey(doc) ? _numViews.get(doc) : 0);
+    return  (_numViews.get(doc));
   }
 
 }
