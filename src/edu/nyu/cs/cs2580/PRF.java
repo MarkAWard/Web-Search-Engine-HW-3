@@ -8,14 +8,16 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Vector;
 
+import com.google.common.collect.HashBiMap;
+
 public class PRF {
-	private HashMap<Integer, Integer> WordMap = new HashMap<Integer, Integer>();
-	private int Total = 0;
-	private Vector<ScoredTerms> scoreTerms = new Vector<ScoredTerms>();
-	private ScoredTerms scoreTs;
-	private Terms words;
+	private static HashMap<Integer, Integer> WordMap = new HashMap<Integer, Integer>();
+	private static int Total = 0;
+	private static Vector<ScoredTerms> scoreTerms = new Vector<ScoredTerms>();
+	private static ScoredTerms scoreTs;
+	private static Terms words;
 	
-	public Vector<ScoredTerms> Relevance(Vector<ScoredDocument> scoredDocs, int numTerms, BiMap dict){
+	public static Vector<ScoredTerms> Relevance(Vector<ScoredDocument> scoredDocs, int numTerms, HashBiMap<String,Integer> dict){
 		Queue<ScoredTerms> rankQueue = new PriorityQueue<ScoredTerms>();
 		int i;
 		for (i=0; i<scoredDocs.size(); i++){
@@ -37,10 +39,12 @@ public class PRF {
 				Total += 1;
 			}
 		}
-				
+			
+		
 		for (int keys:WordMap.keySet())
 		{
-			String name = dict.getkey(keys);
+			
+			String name = dict.inverse().get(keys);
 			words.setName(name);
 			scoreTs.set_term(words);
 			double scor = ((double) WordMap.get(keys))/Total;

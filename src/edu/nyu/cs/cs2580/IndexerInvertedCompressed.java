@@ -17,12 +17,13 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
 
@@ -50,7 +51,8 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	
    private static final long serialVersionUID = 1626440145434710491L;
 	    
-	    private Map<String, Integer> _dictionary = new HashMap<String, Integer>();
+  
+	    private HashBiMap<String, Integer> _dictionary = HashBiMap.create();
 	    private Map<String, Vector<Integer>> _decoded = new HashMap<String, Vector<Integer>>();
 	    private HashMap<Integer, Integer> elias = new HashMap<Integer,Integer>();
 	    private HashMap<Integer, BitSet > _postings=new HashMap<Integer,BitSet>();
@@ -543,7 +545,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 
     }
 
-    public BiMap getDict(){
+    public HashBiMap<String, Integer> getDict(){
     	return _dictionary;
     }
 
@@ -859,6 +861,5 @@ private Double next_pos(String token, int docid, int pos) {
   	}
     return 0;
   }
-
 
 }

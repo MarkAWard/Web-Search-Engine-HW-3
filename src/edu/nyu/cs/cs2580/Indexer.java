@@ -1,5 +1,7 @@
 package edu.nyu.cs.cs2580;
 
+import com.google.common.collect.HashBiMap;
+
 import java.io.IOException;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
@@ -156,5 +158,6 @@ public abstract class Indexer {
     }
   }
 
-public abstract BiMap getDict();
+public abstract HashBiMap<String, Integer> getDict();
+
 }

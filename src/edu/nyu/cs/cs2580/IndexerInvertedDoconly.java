@@ -20,6 +20,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
 
+import com.google.common.collect.HashBiMap;
+
 import edu.nyu.cs.cs2580.SearchEngine.Options;
 
 /**
@@ -395,4 +397,10 @@ public class IndexerInvertedDoconly extends Indexer implements Serializable {
   	// right now only docs that contain every query word are retrieved, so okay for now
     return 1;
   }
+
+@Override
+public HashBiMap<String, Integer> getDict() {
+	// TODO Auto-generated method stub
+	return null;
+}
 }

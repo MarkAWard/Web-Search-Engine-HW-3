@@ -16,6 +16,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
 
+import com.google.common.collect.HashBiMap;
+
 import edu.nyu.cs.cs2580.SearchEngine.Options;
 
 /**
@@ -291,5 +293,11 @@ class IndexerFullScan extends Indexer implements Serializable {
     }
     return retval;
   }
+
+@Override
+public HashBiMap<String, Integer> getDict() {
+	// TODO Auto-generated method stub
+	return null;
+}
 
 }

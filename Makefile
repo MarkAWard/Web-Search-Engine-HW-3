@@ -1,9 +1,9 @@
 JCC = javac
 JVM = java
-JFLAGS = -classpath jsoup-1.8.1.jar
-INDEXFLAGS = -classpath "jsoup-1.8.1.jar:src" 
-RUNFLAGS = -classpath "jsoup-1.8.1.jar:src" -Xmx512m
-MININGFLAGS = -classpath "jsoup-1.8.1.jar:src"
+JFLAGS = -classpath jsoup-1.8.1.jar:guava-18.0.jar
+INDEXFLAGS = -classpath "jsoup-1.8.1.jar:guava-18.0.jar:src" 
+RUNFLAGS = -classpath "jsoup-1.8.1.jar:guava-18.0.jar:src" -Xmx512m
+MININGFLAGS = -classpath "jsoup-1.8.1.jar:guava-18.0.jar:src"
 
 .java.class:
 	$(JCC) $(JFLAGS) $*.java

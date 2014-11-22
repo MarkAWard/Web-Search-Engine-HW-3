@@ -17,6 +17,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
 
+import com.google.common.collect.HashBiMap;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
 
@@ -585,4 +586,10 @@ Vector<Integer> Pt=_postings.get(_dictionary.get(token));
   	}
     return 0;
   }
+
+@Override
+public HashBiMap<String, Integer> getDict() {
+	// TODO Auto-generated method stub
+	return null;
+}
 }
