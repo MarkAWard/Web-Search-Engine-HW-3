@@ -132,7 +132,7 @@ class QueryHandler implements HttpHandler {
     response.append(response.length() > 0 ? "\n" : "");
   }
 
-  private void constructTermOutput(final Vector<ScoredTerms> terms, StringBuffer response) {
+  private void constructTermOutput( Vector<ScoredTerms> terms, StringBuffer response) {
 	    for (ScoredTerms term : terms) {
 	      response.append(response.length() > 0 ? "\n" : "");
 	      response.append(term.asTextResult());
@@ -235,13 +235,17 @@ class QueryHandler implements HttpHandler {
 			ranker.runQuery(processedQuery, cgiArgs._numDocs);
 	
 	// Need a method that retrieves terms (scoreddocs, numterms)
-	Vector<ScoredTerms> scoredTerms = PRF.Relevance(scoredDocs,cgiArgs._numDocs, cgiArgs._numTerms, _indexer.getDict()); 
+	Vector<ScoredTerms> scored = PRF.Relevance(scoredDocs,cgiArgs._numDocs, cgiArgs._numTerms, _indexer.getDict()); 
 	System.out.println("Back from prf");
-	
+	System.out.println(scored.size());
+	for (int i =0; i< scored.size(); i++)
+	{
+		System.out.println(scored.get(i).get_term().getName());
+	}	
 	StringBuffer response = new StringBuffer();
 	switch (cgiArgs._outputFormat) {
 	case TEXT:
-		constructTermOutput(scoredTerms, response);
+		constructTermOutput(scored, response);
 		break;
 	case HTML:
 		// @CS2580: Plug in your HTML output

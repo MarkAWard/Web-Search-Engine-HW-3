@@ -41,21 +41,23 @@ public class PRF {
 			
 		Terms words = new Terms();
 		ScoredTerms scoreTs = new ScoredTerms(words, 0.0);
-		
+			
 		for (int keys:WordMap.keySet())
 		{
 			
 			String name = dict.inverse().get(keys);
 			words.setName(name);
+			//System.out.println(name);
 			scoreTs.set_term(words);
 			double scor = ((double) WordMap.get(keys))/Total;
 			scoreTs.set_score(scor);
 			scoreTerms.add(scoreTs);
+			System.out.println(scoreTs.get_term().getName());
 		}
 			
 			Collections.sort(scoreTerms, Collections.reverseOrder());
 			
-		
+		System.out.println(scoreTerms.size());		
 		return scoreTerms;
 		
 	}
