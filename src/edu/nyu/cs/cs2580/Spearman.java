@@ -61,11 +61,13 @@ public class Spearman {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
 	private static void transform_Pageranks()
 	{
 		List list = new LinkedList(_ranked_docs.entrySet());
 		
-       Collections.sort(list, new Comparator() {
+		Collections.sort(list, new Comparator()
+		{
 			public int compare(Object o2, Object o1)
 			{
                return ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue());
@@ -77,11 +79,9 @@ public class Spearman {
        int stride=1;
        
        
-       for (Iterator it = list.iterator(); it.hasNext();) {
+       for (Iterator it = list.iterator(); it.hasNext();)
+       {
               Map.Entry<String, Double> entry = (Entry<String, Double>) it.next();
-              
-              
-              
               if(entry.getValue()==prev)
               {
             	  _ranked_docs_transformed.put(entry.getKey(), rank);
@@ -98,15 +98,16 @@ public class Spearman {
        }
        
        list = new LinkedList(_ranked_docs_transformed.entrySet());
-//       int k=20;
+       
+       int k=20;
        for (Iterator it = list.iterator(); it.hasNext();) {
-//    	   k--;
+    	   k--;
            Map.Entry<String, Integer> entry = (Entry<String, Integer>) it.next();
         
-//           if(k>0)
-//           System.out.println("Key: "+ entry.getKey() +"PageRank:"+ _ranked_docs.get(entry.getKey())+ " Rank: "+entry.getValue());
-//           
-       }
+           if(k>0)
+           System.out.println("Key: "+ entry.getKey() +"PageRank:"+ _ranked_docs.get(entry.getKey())+ " Rank: "+entry.getValue());
+           
+     }
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -140,14 +141,14 @@ public class Spearman {
               }
               prev=entry.getValue();
        }
-//       int k=20;
+       int k=20;
        list = new LinkedList(_numViews_transformed.entrySet());
        for (Iterator it = list.iterator(); it.hasNext();) {
            Map.Entry<String, Integer> entry = (Entry<String, Integer>) it.next();
-//        k--;
-//        if(k>0)
-//           System.out.println("Key: "+ entry.getKey() + "NumViews:"+ _numViews.get(entry.getKey()) +" Rank: "+entry.getValue());
-//           
+        k--;
+        if(k>0)
+           System.out.println("Key: "+ entry.getKey() + "NumViews:"+ _numViews.get(entry.getKey()) +" Rank: "+entry.getValue());
+           
        }
        
 		
@@ -176,7 +177,7 @@ public class Spearman {
 		
 		System.out.println("Z: "+z);
 		
-		Double f1 = 0.0,f2=0.0,f3=0.0;
+		Double f1 = 0.0,f2=0.0,f3=0.0,f4=0.0;
 		
 //		k=100;
 		
@@ -185,7 +186,7 @@ public class Spearman {
 //			if(k<0)
 //				break;
 			
-		//f1 = f1 + 	Math.pow((_ranked_docs_transformed.get(entry.getKey()))-_numViews_transformed.get(entry.getKey()),2);
+		f4 = f4 + 	Math.pow((_ranked_docs_transformed.get(entry.getKey()))-_numViews_transformed.get(entry.getKey()),2);
 			
 		   f1 +=((_ranked_docs_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey().toLowerCase())-z)); 
 		   f2 += ((_ranked_docs_transformed.get(entry.getKey())-z)*(_ranked_docs_transformed.get(entry.getKey())-z));
@@ -195,6 +196,7 @@ public class Spearman {
 		
 		}
 		
+		System.out.println("Spearman Wiki: " + (1-((6*f1)/(n*(n*n-1)))) );
 		
 		return f1/(f2*f3);
 		//System.out.println(f1);
