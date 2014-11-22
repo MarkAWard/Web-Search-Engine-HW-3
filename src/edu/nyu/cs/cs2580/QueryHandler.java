@@ -43,7 +43,7 @@ class QueryHandler implements HttpHandler {
       COSINE,
       PHRASE,
       QL,
-      LINEAR,
+      LINEAR,COMPREHENSIVE,
     }
     public RankerType _rankerType = RankerType.NONE;
     

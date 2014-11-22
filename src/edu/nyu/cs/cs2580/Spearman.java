@@ -96,18 +96,6 @@ public class Spearman {
               
               prev=entry.getValue();
        }
-       
-       list = new LinkedList(_ranked_docs_transformed.entrySet());
-       
-       int k=20;
-       for (Iterator it = list.iterator(); it.hasNext();) {
-    	   k--;
-           Map.Entry<String, Integer> entry = (Entry<String, Integer>) it.next();
-        
-           if(k>0)
-           System.out.println("Key: "+ entry.getKey() +" PageRank:"+ _ranked_docs.get(entry.getKey())+ " Rank: "+entry.getValue());
-           
-     }
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -141,67 +129,35 @@ public class Spearman {
               }
               prev=entry.getValue();
        }
-       int k=20;
-       list = new LinkedList(_numViews_transformed.entrySet());
-       for (Iterator it = list.iterator(); it.hasNext();) {
-           Map.Entry<String, Integer> entry = (Entry<String, Integer>) it.next();
-        k--;
-        if(k>0)
-           System.out.println("Key: "+ entry.getKey() + " NumViews:"+ _numViews.get(entry.getKey()) +" Rank: "+entry.getValue());
-           
-       }
-       
-		
 	}
 	
 	private static Double calculate_spearman_corr()
 	{
 		Double n = (double) _numViews.size();
 		
-		//Double z = (n+1)/2;
 		Double z=0.0;
-		
-		//int k=100;
-		
+
 		for(Map.Entry<String, Double> entry : _ranked_docs_transformed.entrySet())
 		{
-//			if(k<0)
-//				break;
-			
 			z += _ranked_docs_transformed.get(entry.getKey());
-//			k--;
-			
 		}
-//		 n=10.0;
-		 z=z/n;
 		
-		System.out.println("Z: "+z);
-		
+		z=z/n;
 		Double f1 = 0.0,f2=0.0,f3=0.0,f4=0.0;
-		
-//		k=100;
-		
+
 		for(Map.Entry<String, Double> entry : _ranked_docs_transformed.entrySet())
 		{
-//			if(k<0)
-//				break;
-			
-		f4 = f4 + 	Math.pow((_ranked_docs_transformed.get(entry.getKey()))-_numViews_transformed.get(entry.getKey()),2);
-			
-		   f1 +=((_ranked_docs_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey().toLowerCase())-z)); 
-		   f2 += ((_ranked_docs_transformed.get(entry.getKey())-z)*(_ranked_docs_transformed.get(entry.getKey())-z));
-		   f3 += ((double)((_numViews_transformed.get(entry.getKey().toLowerCase())-z)*(_numViews_transformed.get(entry.getKey().toLowerCase())-z)));
-		   
-		 // k--;
-		
+	
+			//f4 = f4 + 	Math.pow((_ranked_docs_transformed.get(entry.getKey()))-_numViews_transformed.get(entry.getKey()),2);
+			f1 +=((_ranked_docs_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey().toLowerCase())-z)); 
+			f2 += ((_ranked_docs_transformed.get(entry.getKey())-z)*(_ranked_docs_transformed.get(entry.getKey())-z));
+			f3 += ((double)((_numViews_transformed.get(entry.getKey().toLowerCase())-z)*(_numViews_transformed.get(entry.getKey().toLowerCase())-z)));
+
 		}
 		
-		System.out.println("Spearman Wiki: " + (1-((6*f1)/(n*(n*n-1)))) );
+		//System.out.println("Spearman Wiki: " + (1-((6*f1)/(n*(n*n-1)))) );
 		
 		return f1/(Math.sqrt(f2*f3));
-		//System.out.println(f1);
-		
-		//return 1-((6*f1)/(n*(n*n-1)));
 		
 	}
 	
@@ -216,8 +172,6 @@ public class Spearman {
 		
 		Double correlation=calculate_spearman_corr();
 		System.out.println("Spearman rank correlation coefficient between each of the PageRank computations and the number of views: "+correlation);
-		
-		
 	}
 
 
