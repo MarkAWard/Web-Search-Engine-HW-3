@@ -132,7 +132,11 @@ class QueryHandler implements HttpHandler {
     response.append(response.length() > 0 ? "\n" : "");
   }
 
+<<<<<<< HEAD
   private void constructTermOutput( Vector<ScoredTerms> terms, StringBuffer response) {
+=======
+  private void constructTermOutput(Vector<ScoredTerms> terms, StringBuffer response) {
+>>>>>>> 9514b91552b6f2f84efed69c6fe4e51be5bd1526
 	    for (ScoredTerms term : terms) {
 	      response.append(response.length() > 0 ? "\n" : "");
 	      response.append(term.asTextResult());
