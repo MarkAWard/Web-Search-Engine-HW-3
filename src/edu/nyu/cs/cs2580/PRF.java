@@ -1,24 +1,18 @@
 package edu.nyu.cs.cs2580;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Vector;
 
 import com.google.common.collect.HashBiMap;
 
 public class PRF {
-	private static HashMap<Integer, Integer> WordMap = new HashMap<Integer, Integer>();
-	private static int Total = 0;
 	
-
-	
+		
 	public static Vector<ScoredTerms> Relevance(Vector<ScoredDocument> scoredDocs,int numdocs, int numTerms, HashBiMap<String,Integer> dict){
-		Queue<ScoredTerms> rankQueue = new PriorityQueue<ScoredTerms>();
 		int i;
+		int Total=0;
+		HashMap<Integer, Integer> WordMap = new HashMap<Integer, Integer>();
 		for (i=0; i<numdocs; i++){
 			ScoredDocument docum = scoredDocs.get(i);
 			Document d =  docum.get_doc();
