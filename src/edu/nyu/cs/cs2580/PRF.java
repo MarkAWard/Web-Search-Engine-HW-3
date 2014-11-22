@@ -13,7 +13,7 @@ import com.google.common.collect.HashBiMap;
 public class PRF {
 	private static HashMap<Integer, Integer> WordMap = new HashMap<Integer, Integer>();
 	private static int Total = 0;
-	public static Vector<ScoredTerms> scoreTerms = new Vector<ScoredTerms>();
+	
 
 	
 	public static Vector<ScoredTerms> Relevance(Vector<ScoredDocument> scoredDocs,int numdocs, int numTerms, HashBiMap<String,Integer> dict){
@@ -41,7 +41,7 @@ public class PRF {
 			
 		Terms words = new Terms();
 		ScoredTerms scoreTs = new ScoredTerms(words, 0.0);
-			
+		Vector<ScoredTerms> scoreTerms = new Vector<ScoredTerms>();
 		for (int keys:WordMap.keySet())
 		{
 			
