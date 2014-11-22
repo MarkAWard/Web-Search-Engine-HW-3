@@ -18,7 +18,7 @@ class ScoredTerms implements Comparable<ScoredTerms>{
 
 	@Override
 	public int compareTo(ScoredTerms t) {
-		// TODO Auto-generated method stub
+
 		if (this._score == t._score)
 			return 0;
 		else
@@ -32,16 +32,14 @@ public Terms get_term() {
 	return _term;
 }
 
-public void set_term(Terms _term) {
-	this._term = _term;
+public void set_term(Terms term) {
+	_term = term;
 }
 	
-public void set_score(double _score)
+public void set_score(double score)
 {
-	this._score = _score;
-	}
-
-
+	_score = score;
+}
 
 public double get_score(){
 	return _score;
