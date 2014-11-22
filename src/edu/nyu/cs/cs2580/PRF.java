@@ -24,6 +24,8 @@ public class PRF {
 			Document d =  docum.get_doc();
 			HashMap<Integer, Integer> wordHash = ((DocumentIndexed) d).getTopWords(numTerms);
 			
+			System.out.println(wordHash.size());
+			
 			for (int j:wordHash.keySet())
 			{
 				if (WordMap.containsKey(j))
