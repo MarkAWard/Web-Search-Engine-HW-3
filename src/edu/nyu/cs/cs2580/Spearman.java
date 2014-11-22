@@ -131,7 +131,7 @@ public class Spearman {
        }
 	}
 	
-	private static Double calculate_spearman_corr()
+	private static Double calculate_Spearman_coff()
 	{
 		Double n = (double) _numViews.size();
 		
@@ -166,7 +166,7 @@ public class Spearman {
 		transform_Pageranks();
 		transform_Numviews();
 		
-		Double correlation=calculate_spearman_corr();
+		Double correlation=calculate_Spearman_coff();
 		System.out.println("Spearman rank correlation coefficient between each of the PageRank computations and the number of views: "+correlation);
 	}
 
