@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashSet;
+import java.io.Serializable;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
 
-public class StopWords {
+public class StopWords implements Serializable {
 
 	private HashSet<String> _stopwords = new HashSet<String>();
 

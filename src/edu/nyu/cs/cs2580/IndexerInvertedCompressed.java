@@ -188,7 +188,8 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	_term_list=null;
 	_skip_pointer=null;
 	_term_position=null;
-	
+	_StopWords = null;
+
 	try{
 		
 	
