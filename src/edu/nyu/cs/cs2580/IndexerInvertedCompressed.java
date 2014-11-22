@@ -31,22 +31,21 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
  */
 public class IndexerInvertedCompressed extends Indexer implements Serializable {
 
-
-
   public class Tuple<T, R> {
-    private T word;
-    private R len;
+    private T first;
+    private R second;
 
     public Tuple(T t, R r) {
-      this.word = t;
-      this.len = r;
+      this.first = t;
+      this.second = r;
     }
-    public R getLen() {
-      return len;
+    public T getFirst() {
+      return first;
     }
-    public T getWord() {
-      return word;
+    public R getSecond() {
+      return second;
     }
+
   }
 	
    private static final long serialVersionUID = 1626440145434710491L;
@@ -218,14 +217,6 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
     		
     		r= (int) (symbol - Math.pow(2, d));
     		
-    		
-//    		System.out.println(idx);
-//    		System.out.println(b.size());
-//    		System.out.println("D: " +d);
-//    		System.out.println("R: " +r);
-    		
-    		//System.out.println("Symbol: " +symbol);
-    		
     		b.set(idx, idx+d);
     		
     		idx=idx+d;
@@ -264,6 +255,54 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	return b;
 }
 
+    
+    private Tuple<BitSet, Integer> elias_encode(Vector<Integer> posting) {
+  // TODO Auto-generated method stub
+      
+      BitSet b=new BitSet();
+      int symbol;
+      int d;
+      int r;
+      int idx=0;
+      
+      for(int i=0;i<posting.size();i++)
+      {
+        
+        symbol=posting.get(i);
+        symbol++;
+        
+        d= (int) (Math.log(symbol)/Math.log(2));  
+        r= (int) (symbol - Math.pow(2, d));
+        
+        b.set(idx, idx+d);
+        
+        idx=idx+d;
+        
+        b.set(idx, false);
+        
+        idx=idx+1;
+        
+        for(int j=d-1;j>=0;j--)
+        {
+          
+          if(r-Math.pow(2, j)>=0)
+          {
+            b.set(idx);
+            idx=idx+1;
+            r=(int) (r-Math.pow(2, j));
+          }
+          else
+          {
+            b.set(idx,false);
+            
+            idx=idx+1;
+            
+          }
+        }
+      }
+      
+  return new Tuple<BitSet, Integer>(b, idx);
+}
 
 
 	private Vector<Integer> update_skip(Vector<Integer> skip, int size) {
@@ -278,18 +317,19 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	return skip;
     }
     
-    private void processDocument(String content) {
+  private void processDocument(String content) {
 	// TODO Auto-generated method stub
 	
 	Scanner s = new Scanner(content).useDelimiter("\t");
 	Set<Integer> uniqueTerms = new HashSet<Integer>();
+  HashMap<Integer, Integer> document_tf = new HashMap<Integer, Integer>();
 
 	// pass the title 
 	String title = s.next();
-	//readTermVector(title, uniqueTerms);
 	
 	// pass the body
-	readTermVector(s.next(), uniqueTerms);
+	document_tf = readTermVector(s.next(), uniqueTerms);
+  Tuple<BitSet, Integer> doctf_bits = convertToBitSet(document_tf, _options._keepTerms);
 	
 	// get number of views
 	int numViews = Integer.parseInt(s.next());
@@ -306,6 +346,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	doc.setNumViews( ( (LogMinerNumviews)_logMiner).getNumviews(title.toLowerCase()));
 	doc.setPageRank( ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title.toLowerCase()));
 	doc.setUrl(url);
+  doc.saveTopWords(doctf_bits.getFirst(), doctf_bits.getSecond());
 	((DocumentIndexed) doc).removeAll();
 	// add the document
 	_documents.add(doc); 
@@ -375,10 +416,12 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
     	return positions;
 	}
 
-	private void readTermVector(String content, Set <Integer> uniques) {
+	private HashMap<Integer, Integer> readTermVector(String content, Set <Integer> uniques) {
 	Scanner s = new Scanner(content);  // Uses white space by default.
 	int pos = -1;
 	Vector<Integer> positions = new Vector<Integer>();
+  HashMap<Integer, Integer> document_tf = new HashMap<Integer, Integer>();
+
 	while (s.hasNext()) {
 		
 	    String token = s.next();
@@ -387,26 +430,30 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	    
 	    // get index from the dictionary or add it
 	    if (!_dictionary.containsKey(token)) {
-		idx = _dictionary.size();
-		_dictionary.put(token, idx);
-		
-	        _termCorpusFrequency.put(idx, 0);
-	        _termDocFrequency.put(idx, 0);
-	
-		// create these things for new word
-		_skip_pointer.put(idx, new Vector<Integer>());
-		_term_list.put(idx, new Vector<Integer>());
-		_term_position.put(idx, new Vector<Integer>());
-		_postings.put(idx,new BitSet());
-	
+		    idx = _dictionary.size();
+		    _dictionary.put(token, idx);
+        
+        _termCorpusFrequency.put(idx, 0);
+        _termDocFrequency.put(idx, 0);
+	       
+    		// create these things for new word
+    		_skip_pointer.put(idx, new Vector<Integer>());
+    		_term_list.put(idx, new Vector<Integer>());
+    		_term_position.put(idx, new Vector<Integer>());
+    		_postings.put(idx,new BitSet());
+    	
 	    } else {
-		idx = _dictionary.get(token);
+		    idx = _dictionary.get(token);
 	    }
 	    
 	    // make sure term is in term_position
 	    if (!_term_position.containsKey(idx)) {
-		_term_position.put(idx, new Vector<Integer>() );
+		    _term_position.put(idx, new Vector<Integer>() );
 	    }
+      
+      if (!document_tf.containsKey(idx)) {
+        document_tf.put(idx, 0);
+      }
 
 
 	    // add position of the term
@@ -419,12 +466,13 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	    
 	    // update stats
 	    _termCorpusFrequency.put(idx, _termCorpusFrequency.get(idx) + 1);
+      document_tf.put(idx, document_tf.get(idx) + 1);
 	    ++_totalTermFrequency;
 
-	    
-	}
-	return;
     }
+
+    return document_tf;
+  }
     
   
     @Override
@@ -460,49 +508,42 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	this._logMiner=loaded._logMiner;
 	//_logMiner.load();
 	
-
-
-    Comparator< Tuple<Integer, Integer>> comparator = new Comparator<Tuple<Integer, Integer>>()
-    {
-
-        public int compare(Tuple<Integer, Integer> tupleA, Tuple<Integer, Integer> tupleB)
-        {
-            return tupleB.getLen().compareTo(tupleA.getLen());
-        }
-
-    };
-
-  List<Tuple<Integer, Integer>> tuples = new ArrayList<Tuple<Integer, Integer>>();
-
-  for (Integer key : _postings.keySet()) {
-   tuples.add(new Tuple<Integer, Integer>( key, elias.get(key)));
-   //System.out.println(key, elias.get(key));
-  }
-Collections.sort(tuples, comparator);
-int i = 0;
-for (Tuple<Integer, Integer> tuple : tuples)
-    {
-      i++;
-      String word = "_";
-      //      String word = Integer.toString(tuple.getWord());
-      for(String k : _dictionary.keySet()){
-	  if(_dictionary.get(k) == tuple.getWord()){
-	      word = k;
-	      break;
-	  }
-      }
-
-      System.out.println(i + " " + word + " -> " + tuple.getLen());
-        if(i > 200)
-          break;
-    }
-
 	
 	reader.close();
 	loaded=null;
 	//System.out.println(Integer.toString(_numDocs) + " documents loaded " + "with " + Long.toString(_totalTermFrequency) + " terms!"); 
 	
     }
+
+
+    private Tuple<BitSet, Integer> convertToBitSet(HashMap<Integer, Integer> doc_tf, int nterms) {
+
+      Vector<Integer> word_counts = new Vector<Integer>();
+
+      ArrayList<Tuple<Integer, Integer>> tuples = new ArrayList<Tuple<Integer, Integer>>();
+      for (Integer word : doc_tf.keySet())
+        tuples.add(new Tuple<Integer, Integer>( word, doc_tf.get(word)));
+
+      Comparator< Tuple<Integer, Integer>> comparator = new Comparator<Tuple<Integer, Integer>>() {
+        public int compare(Tuple<Integer, Integer> tupleA, Tuple<Integer, Integer> tupleB) {
+            return tupleB.getSecond().compareTo(tupleA.getSecond());
+        }
+      };
+      Collections.sort(tuples, comparator);
+
+      int count = 0;
+      for(Tuple<Integer, Integer> tuple : tuples) {
+        word_counts.add(tuple.getFirst());
+        word_counts.add(tuple.getSecond());
+        count++;
+        if(count == nterms) break;
+      }
+
+      return elias_encode(word_counts);
+
+    }
+
+
 
     
     @Override
