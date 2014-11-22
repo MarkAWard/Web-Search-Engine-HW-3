@@ -236,9 +236,13 @@ class QueryHandler implements HttpHandler {
 			ranker.runQuery(processedQuery, cgiArgs._numDocs);
 	
 	// Need a method that retrieves terms (scoreddocs, numterms)
+	
+	
+	
 	Vector<ScoredTerms> scored = PRF.Relevance(scoredDocs,cgiArgs._numDocs, cgiArgs._numTerms, _indexer.getDict()); 
 	System.out.println("Back from prf");
 	System.out.println(scored.size());
+	
 	for (int i =0; i< scored.size(); i++)
 	{
 		System.out.println(scored.get(i).get_term().getName());

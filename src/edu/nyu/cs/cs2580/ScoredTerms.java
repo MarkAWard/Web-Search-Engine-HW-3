@@ -19,10 +19,12 @@ class ScoredTerms implements Comparable<ScoredTerms>{
 	@Override
 	public int compareTo(ScoredTerms t) {
 
-		if (this._score == t._score)
-			return 0;
-		else
-			return (this._score > t._score) ? 1 : -1;
+		return Double.compare(t._score, this._score);
+		
+//		if (this._score == t._score)
+//			return 0;
+//		else
+//			return (this._score > t._score) ? 1 : -1;
 	}
 	public String asHtmlResult() {
 	    return "";
