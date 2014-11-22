@@ -1,10 +1,14 @@
 package edu.nyu.cs.cs2580;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Scanner;
 import java.util.Vector;
 
 public class Bhattacharyya {
@@ -34,7 +38,8 @@ public class Bhattacharyya {
 	
 	public static void main(String[] args) throws IOException
 	{
-		parse_CommandLine(args);	
+		parse_CommandLine(args);
+		System.out.println("Calculating Bhattacharyya coefficient");
 		query_similarity();
 		
 	}
@@ -53,7 +58,6 @@ public class Bhattacharyya {
 			if(fileEntry.getName().endsWith(".tsv"))
 			{
 				file_names.add(fileEntry.getName());
-				System.out.println(fileEntry.getName());
 			}
 			
 		}
@@ -83,16 +87,48 @@ public class Bhattacharyya {
 
 
 
-	private static Double calculate_Bhattacharyya_coff(String f1,String f2)
+	private static Double calculate_Bhattacharyya_coff(String f1,String f2) throws IOException
 	{
 		Double beta=0.0;
+		BufferedReader br1= new BufferedReader(new FileReader(_prf_path+f1));
+		BufferedReader br2= new BufferedReader(new FileReader(_prf_path+f2));
+		
+		String term1=null;
+		Double prob1=null;
+		String term2=null;
+		Double prob2=null;
+		
+		String line1=null;
+		String line2=null;
+		
+		Scanner s1 = null;
+		Scanner s2 = null;
 		
 		
+		while(((line1=br1.readLine())!=null)&&(line2=br2.readLine())!=null)
+		{
+			
+			s1= new Scanner(line1).useDelimiter("\t");
+			s2= new Scanner(line2).useDelimiter("\t");
+			
+			
+			term1=s1.next();
+			prob1=s1.nextDouble();
+			
+			term2=s2.next();
+			prob2=s2.nextDouble();
+			
+			beta= beta + Math.sqrt(prob1*prob2);
+			
+		}
 		
-	
-		return beta;
-		
-		
+		s1.close();
+		s2.close();
+		br1.close();
+		br2.close();
+
+		System.out.printf("%s\t%s\t%f\n",f1,f2,beta);
+		return beta;	
 	
 		
 	}

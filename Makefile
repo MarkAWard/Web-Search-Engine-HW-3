@@ -50,7 +50,7 @@ spearman:
 	$(JVM) $(RUNFLAGS) edu.nyu.cs.cs2580.Spearman
 
 bhatta:
-	$(JVM) $(RUNFLAGS) edu.nyu.cs.cs2580.Bhattacharyya prf/ prf/ 	  
+	$(JVM) $(RUNFLAGS) edu.nyu.cs.cs2580.Bhattacharyya prf/ outputs/ 	  
 
 clean:
 	find . -name '*.class' -exec rm -rf {} \;
