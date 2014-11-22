@@ -148,15 +148,11 @@ public class Spearman {
 		for(Map.Entry<String, Double> entry : _ranked_docs_transformed.entrySet())
 		{
 	
-			//f4 = f4 + 	Math.pow((_ranked_docs_transformed.get(entry.getKey()))-_numViews_transformed.get(entry.getKey()),2);
 			f1 +=((_ranked_docs_transformed.get(entry.getKey())-z)*(_numViews_transformed.get(entry.getKey().toLowerCase())-z)); 
 			f2 += ((_ranked_docs_transformed.get(entry.getKey())-z)*(_ranked_docs_transformed.get(entry.getKey())-z));
 			f3 += ((double)((_numViews_transformed.get(entry.getKey().toLowerCase())-z)*(_numViews_transformed.get(entry.getKey().toLowerCase())-z)));
 
 		}
-		
-		//System.out.println("Spearman Wiki: " + (1-((6*f1)/(n*(n*n-1)))) );
-		
 		return f1/(Math.sqrt(f2*f3));
 		
 	}
