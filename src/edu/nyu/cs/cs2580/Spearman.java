@@ -68,7 +68,7 @@ public class Spearman {
 		
 		Collections.sort(list, new Comparator()
 		{
-			public int compare(Object o2, Object o1)
+			public int compare(Object o1, Object o2)
 			{
                return ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue());
             }
@@ -105,7 +105,7 @@ public class Spearman {
            Map.Entry<String, Integer> entry = (Entry<String, Integer>) it.next();
         
            if(k>0)
-           System.out.println("Key: "+ entry.getKey() +"PageRank:"+ _ranked_docs.get(entry.getKey())+ " Rank: "+entry.getValue());
+           System.out.println("Key: "+ entry.getKey() +" PageRank:"+ _ranked_docs.get(entry.getKey())+ " Rank: "+entry.getValue());
            
      }
 	}
@@ -116,7 +116,7 @@ public class Spearman {
 	List list = new LinkedList(_numViews.entrySet());
 	
        Collections.sort(list, new Comparator() {
-			public int compare(Object o2, Object o1)
+			public int compare(Object o1, Object o2)
 			{
                return ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue());
             }
@@ -147,7 +147,7 @@ public class Spearman {
            Map.Entry<String, Integer> entry = (Entry<String, Integer>) it.next();
         k--;
         if(k>0)
-           System.out.println("Key: "+ entry.getKey() + "NumViews:"+ _numViews.get(entry.getKey()) +" Rank: "+entry.getValue());
+           System.out.println("Key: "+ entry.getKey() + " NumViews:"+ _numViews.get(entry.getKey()) +" Rank: "+entry.getValue());
            
        }
        
