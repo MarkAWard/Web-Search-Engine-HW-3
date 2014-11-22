@@ -39,30 +39,27 @@ public class PRF {
 			}
 		}
 			
-		Terms words = new Terms();
-		ScoredTerms scoreTs = new ScoredTerms(words, 0.0);
+		
+		
 		Vector<ScoredTerms> scoreTerms = new Vector<ScoredTerms>();
 		for (int keys:WordMap.keySet())
 		{
 			
 			String name = dict.inverse().get(keys);
-			words.setName(name);
-			//System.out.println(name);
-			scoreTs.set_term(words);
 			double scor = ((double) WordMap.get(keys))/Total;
-			scoreTs.set_score(scor);
+			ScoredTerms scoreTs = new ScoredTerms(new Terms(name), scor);
 			scoreTerms.add(scoreTs);
-			for ( i =0; i< scoreTerms.size(); i++)
-			{
-				System.out.println(scoreTerms.get(i).get_term().getName());
-			}
-			System.out.println(scoreTerms.size());	
+	
 	
 		}
 			
 		//Collections.sort(scoreTerms, Collections.reverseOrder());
 			
-			
+		for ( i =0; i< scoreTerms.size(); i++)
+		{
+			System.out.println(scoreTerms.get(i).get_term().getName());
+		}
+		System.out.println(scoreTerms.size());	
 		return scoreTerms;
 		
 	}
