@@ -21,7 +21,7 @@ public class PRF {
 		for (i=0; i<scoredDocs.size(); i++){
 			ScoredDocument docum = scoredDocs.get(i);
 			Document d =  docum.get_doc();
-			HashMap<Integer, Integer> wordHash = d.getTopWords(numTerms);
+			HashMap<Integer, Integer> wordHash = ((DocumentIndexed) d).getTopWords(numTerms);
 			
 			for (int j:wordHash.keySet())
 			{
