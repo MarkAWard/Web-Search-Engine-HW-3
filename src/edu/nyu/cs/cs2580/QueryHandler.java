@@ -44,6 +44,7 @@ class QueryHandler implements HttpHandler {
       PHRASE,
       QL,
       LINEAR,
+      COMPREHENSIVE
     }
     public RankerType _rankerType = RankerType.NONE;
     
@@ -131,6 +132,17 @@ class QueryHandler implements HttpHandler {
     response.append(response.length() > 0 ? "\n" : "");
   }
 
+  private void constructTermOutput(
+	      final Vector<ScoredTerms> terms, StringBuffer response) {
+	    for (ScoredTerms term : terms) {
+	      response.append(response.length() > 0 ? "\n" : "");
+	      response.append(term.asTextResult());
+	      
+	    }
+	    response.append(response.length() > 0 ? "\n" : "");
+	  }
+  
+  
   public void handle(HttpExchange exchange) throws IOException {
     String requestMethod = exchange.getRequestMethod();
     if (!requestMethod.equalsIgnoreCase("GET")) { // GET requests only.
@@ -151,7 +163,7 @@ class QueryHandler implements HttpHandler {
     if (uriPath == null || uriQuery == null) {
       respondWithMsg(exchange, "Something wrong with the URI!");
     }
-    if (!uriPath.equals("/search") || !uriPath.equals("/prf")) {
+    if (!uriPath.equals("/search") && !uriPath.equals("/prf")) {
       respondWithMsg(exchange, "Only /search and /prf is handled!");
     }
     if (uriPath.equals("/search"))
@@ -224,11 +236,12 @@ class QueryHandler implements HttpHandler {
 			ranker.runQuery(processedQuery, cgiArgs._numDocs);
 	
 	// Need a method that retrieves terms (scoreddocs, numterms)
+	Vector<ScoredTerms> scoredTerms = PRF.Relevance(scoredDocs, cgiArgs._numTerms, _indexer.getDict()); 
 	
 	StringBuffer response = new StringBuffer();
 	switch (cgiArgs._outputFormat) {
 	case TEXT:
-		constructTextOutput(scoredDocs, response);
+		constructTermOutput(scoredTerms, response);
 		break;
 	case HTML:
 		// @CS2580: Plug in your HTML output
