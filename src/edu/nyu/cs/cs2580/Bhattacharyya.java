@@ -66,9 +66,6 @@ public class Bhattacharyya {
 		
 		
 		PrintWriter writer = new PrintWriter(_output_path+"Bhattacharyya.tsv", "UTF-8");
-		
-		
-		
 		for(int i=0; i<file_names.size();i++)
 		{
 			for(int j=i+1;j<file_names.size(); j++)

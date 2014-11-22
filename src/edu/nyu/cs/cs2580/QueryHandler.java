@@ -136,7 +136,7 @@ class QueryHandler implements HttpHandler {
   private void constructTermOutput(Vector<ScoredTerms> terms, StringBuffer response) {
 	  
 	  if(terms.size()==0)
-		  response.append("404 No Document Found");
+		  response.append("ERROR:404 No Document Found");
 	  
 	  for (ScoredTerms term : terms) {
 	      response.append(response.length() > 0 ? "\n" : "");
