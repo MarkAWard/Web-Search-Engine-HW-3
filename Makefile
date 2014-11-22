@@ -31,6 +31,7 @@ CLASSES = \
 	src/edu/nyu/cs/cs2580/RankerConjunctive.java \
 	src/edu/nyu/cs/cs2580/Stemmer.java \
 	src/edu/nyu/cs/cs2580/Spearman.java \
+	src/edu/nyu/cs/cs2580/Bhattacharyya.java \
 
 
 default:
@@ -46,7 +47,10 @@ run:
 	$(JVM) $(RUNFLAGS) edu.nyu.cs.cs2580.SearchEngine --mode=serve --port=25808 --options=conf/engine.conf 
 
 spearman:
-	$(JVM) $(RUNFLAGS) edu.nyu.cs.cs2580.Spearman  
+	$(JVM) $(RUNFLAGS) edu.nyu.cs.cs2580.Spearman
+
+bhatta:
+	$(JVM) $(RUNFLAGS) edu.nyu.cs.cs2580.Bhattacharyya prf/ outputs/ 	  
 
 clean:
 	find . -name '*.class' -exec rm -rf {} \;
