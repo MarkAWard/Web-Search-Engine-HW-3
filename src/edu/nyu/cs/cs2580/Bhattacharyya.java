@@ -13,8 +13,10 @@ import java.util.Vector;
 
 public class Bhattacharyya {
 	
-	static String _prf_path=null;
-	static String _output_path=null;
+	static String _prf_file=null;
+	static String _output_file=null;
+	static Vector<String> queries=new Vector<String>();
+	static Vector<String> paths=new Vector<String>();
 	
 	
 	
@@ -22,58 +24,42 @@ public class Bhattacharyya {
 	{
 		if(args.length==0)
 		{
-			_prf_path= "";
-			_output_path= "";
+			_prf_file= "";
+			_output_file= "";
 		}
 		else
 		{
-			_prf_path=args[0];
-			_output_path=args[1];
+			_prf_file=args[0];
+			_output_file=args[1];
 			
 		}
 	}
-	
-	
-	
-	
-	public static void main(String[] args) throws IOException
-	{
-		parse_CommandLine(args);
-		System.out.println("Calculating Bhattacharyya coefficient");
-		query_similarity();
-		
-	}
-
-
-
-
 	private static void query_similarity() throws IOException
 	{
-		Vector<String> file_names=new Vector<String>();
-		final File Dir = new File(_prf_path);
-		for (final File fileEntry : Dir.listFiles()) {
-			if(fileEntry.isHidden())
-				continue;
-			
-			if(fileEntry.getName().endsWith(".tsv"))
-			{
-				file_names.add(fileEntry.getName());
-			}
-			
+		
+		BufferedReader br1= new BufferedReader(new FileReader(_prf_file));
+		String line=null;
+
+		
+		while((line=br1.readLine()) != null)
+		{
+			Scanner s= new Scanner(line).useDelimiter(":");
+			queries.add(s.next());
+			paths.add(s.next());
+			s.close();
 		}
 		
 		Double similarity;
 		
+		PrintWriter writer = new PrintWriter("./"+_output_file,"UTF-8");
 		
-		PrintWriter writer = new PrintWriter(_output_path+"Bhattacharyya.tsv", "UTF-8");
-		for(int i=0; i<file_names.size();i++)
+		for(int i=0; i<paths.size();i++)
 		{
-			for(int j=i+1;j<file_names.size(); j++)
+			for(int j=i+1;j<paths.size(); j++)
 			{
-				
-				similarity=calculate_Bhattacharyya_coff(file_names.get(i),file_names.get(j));
-				writer.printf("%s\t%s\t%f\n",file_names.get(i),file_names.get(j),similarity);
-				
+				similarity=calculate_Bhattacharyya_coff(paths.get(i),paths.get(j));
+				writer.printf("%s\t%s\t%f\n",queries.get(i),queries.get(j),similarity);
+				System.out.printf("%s\t%s\t%f\n",queries.get(i),queries.get(j),similarity);
 			}
 			
 		}
@@ -87,8 +73,8 @@ public class Bhattacharyya {
 	private static Double calculate_Bhattacharyya_coff(String f1,String f2) throws IOException
 	{
 		Double beta=0.0;
-		BufferedReader br1= new BufferedReader(new FileReader(_prf_path+f1));
-		BufferedReader br2= new BufferedReader(new FileReader(_prf_path+f2));
+		BufferedReader br1= new BufferedReader(new FileReader(f1));
+		BufferedReader br2= new BufferedReader(new FileReader(f2));
 		
 		String term1=null;
 		Double prob1=null;
@@ -123,10 +109,18 @@ public class Bhattacharyya {
 		s2.close();
 		br1.close();
 		br2.close();
-
-		System.out.printf("%s\t%s\t%f\n",f1,f2,beta);
 		return beta;	
 	
+		
+	}
+	
+	
+	
+	public static void main(String[] args) throws IOException
+	{
+		parse_CommandLine(args);
+		System.out.println("Calculating Bhattacharyya coefficient");
+		query_similarity();
 		
 	}
 
