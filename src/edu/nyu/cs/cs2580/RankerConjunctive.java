@@ -57,7 +57,7 @@ public class RankerConjunctive extends Ranker {
   			 pos=_indexer.NextPhrase(qp.phrase.get(j), i._docid, -1);
 			if (pos != Double.POSITIVE_INFINITY)
 				{
-  				System.out.println( "Position: " + pos+ "Docid: " + i._docid  );
+  				System.out.println( "Position: " + pos+ " Docid: " + i._docid + " Docname: " + i.getTitle() );
 				
 				}
   			 
@@ -79,7 +79,7 @@ public class RankerConjunctive extends Ranker {
         
         else
         {
-        	
+        	System.out.println(  " Docid: " + i._docid + " Docname: " + i.getTitle() );	
         	rankQueue.add(scoreDocument(query, i));
         	
         }
