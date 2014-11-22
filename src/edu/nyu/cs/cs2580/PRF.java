@@ -52,16 +52,17 @@ public class PRF {
 			double scor = ((double) WordMap.get(keys))/Total;
 			scoreTs.set_score(scor);
 			scoreTerms.add(scoreTs);
+			for ( i =0; i< scoreTerms.size(); i++)
+			{
+				System.out.println(scoreTerms.get(i).get_term().getName());
+			}
+			System.out.println(scoreTerms.size());	
 	
 		}
 			
 		//Collections.sort(scoreTerms, Collections.reverseOrder());
 			
-		for ( i =0; i< scoreTerms.size(); i++)
-		{
-			System.out.println(scoreTerms.get(i).get_term().getName());
-		}
-		System.out.println(scoreTerms.size());		
+			
 		return scoreTerms;
 		
 	}
