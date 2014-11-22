@@ -38,18 +38,28 @@ public class PRF {
 		
 		
 		Vector<ScoredTerms> scoreTerms = new Vector<ScoredTerms>();
+		
+		
+		
 		for (int keys:WordMap.keySet())
 		{
+			
 			String name = dict.inverse().get(keys);
 			double scor = ((double) WordMap.get(keys))/Total;
 			ScoredTerms scoreTs = new ScoredTerms(new Terms(name), scor);
 			scoreTerms.add(scoreTs);
+			
+			numTerms--;
+			if(numTerms<=0)
+				break;
 	
 	
 		}
 			
 		Collections.sort(scoreTerms, Collections.reverseOrder());
 	
+		
+		
 		return scoreTerms;
 		
 	}
