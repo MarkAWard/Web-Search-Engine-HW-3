@@ -27,5 +27,23 @@ class ScoredTerms implements Comparable<ScoredTerms>{
 	public String asHtmlResult() {
 	    return "";
 	  }
+
+public Terms get_term() {
+	return _term;
+}
+
+public void set_term(Terms _term) {
+	this._term = _term;
+}
 	
+public void set_score(double _score)
+{
+	this._score = _score;
+	}
+
+
+
+public double get_score(){
+	return _score;
+}
 }
