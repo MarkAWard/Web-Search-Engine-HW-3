@@ -13,12 +13,12 @@ public class PRF {
 		int i;
 		int Total=0;
 		HashMap<Integer, Integer> WordMap = new HashMap<Integer, Integer>();
+		numdocs= Math.min(numdocs, scoredDocs.size());
 		for (i=0; i<numdocs; i++){
 			ScoredDocument docum = scoredDocs.get(i);
 			Document d =  docum.get_doc();
 			HashMap<Integer, Integer> wordHash = ((DocumentIndexed) d).getTopWords(numTerms);
 			
-			System.out.println(wordHash.size());
 			
 			for (int j:wordHash.keySet())
 			{
