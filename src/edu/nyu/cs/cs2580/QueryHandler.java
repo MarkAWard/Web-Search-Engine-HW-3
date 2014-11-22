@@ -31,6 +31,8 @@ class QueryHandler implements HttpHandler {
     public String _query = "";
     // How many results to return
     private int _numResults = 10;
+    private int _numTerms = 10;
+    private int _numDocs = 10;
     
     // The type of the ranker we will be using.
     public enum RankerType {
@@ -42,7 +44,6 @@ class QueryHandler implements HttpHandler {
       PHRASE,
       QL,
       LINEAR,
-      COMPREHENSIVE,
     }
     public RankerType _rankerType = RankerType.NONE;
     
@@ -83,6 +84,20 @@ class QueryHandler implements HttpHandler {
             // Ignored, search engine should never fail upon invalid user input.
           }
         }
+        else if (key.equals("numdocs")) {
+        try {
+        	_numDocs = Integer.parseInt(val);
+        	}
+        catch (NumberFormatException e) {
+        	}
+        }
+        else if (key.equals("numterms")){
+        try {
+        	_numTerms = Integer.parseInt(val);
+        	}
+        catch (NumberFormatException e){
+        }
+        }
       }  // End of iterating over params
     }
   }
@@ -111,6 +126,7 @@ class QueryHandler implements HttpHandler {
     for (ScoredDocument doc : docs) {
       response.append(response.length() > 0 ? "\n" : "");
       response.append(doc.asTextResult());
+      
     }
     response.append(response.length() > 0 ? "\n" : "");
   }
@@ -135,45 +151,97 @@ class QueryHandler implements HttpHandler {
     if (uriPath == null || uriQuery == null) {
       respondWithMsg(exchange, "Something wrong with the URI!");
     }
-    if (!uriPath.equals("/search")) {
-      respondWithMsg(exchange, "Only /search is handled!");
+    if (!uriPath.equals("/search") || !uriPath.equals("/prf")) {
+      respondWithMsg(exchange, "Only /search and /prf is handled!");
     }
-    System.out.println("Query: " + uriQuery);
+    if (uriPath.equals("/search"))
+    {
+    	System.out.println("Query: " + uriQuery);
 
-    // Process the CGI arguments.
-    CgiArguments cgiArgs = new CgiArguments(uriQuery);
-    if (cgiArgs._query.isEmpty()) {
-      respondWithMsg(exchange, "No query is given!");
-    }
+    	// Process the CGI arguments.
+    	CgiArguments cgiArgs = new CgiArguments(uriQuery);
+    	if (cgiArgs._query.isEmpty()) {
+    		respondWithMsg(exchange, "No query is given!");
+    	}
 
-    // Create the ranker.
-    Ranker ranker = Ranker.Factory.getRankerByArguments(
-        cgiArgs, SearchEngine.OPTIONS, _indexer);
-    if (ranker == null) {
-      respondWithMsg(exchange,
-          "Ranker " + cgiArgs._rankerType.toString() + " is not valid!");
-    }
+    	// Create the ranker.
+    	Ranker ranker = Ranker.Factory.getRankerByArguments(
+    			cgiArgs, SearchEngine.OPTIONS, _indexer);
+    	if (ranker == null) 
+    	{
+    		respondWithMsg(exchange,
+    				"Ranker " + cgiArgs._rankerType.toString() + " is not valid!");
+    	}
 
-    // Processing the query.
-    Query processedQuery = new Query(cgiArgs._query);
-    processedQuery.processQuery();
+    	// Processing the query.
+    	Query processedQuery = new Query(cgiArgs._query);
+    	processedQuery.processQuery();
+    
 
-    // Ranking.
-    Vector<ScoredDocument> scoredDocs =
-        ranker.runQuery(processedQuery, cgiArgs._numResults);
-    StringBuffer response = new StringBuffer();
-    switch (cgiArgs._outputFormat) {
-    case TEXT:
-      constructTextOutput(scoredDocs, response);
-      break;
-    case HTML:
-      // @CS2580: Plug in your HTML output
-      break;
-    default:
-      // nothing
-    }
+    	// Ranking.
+    	Vector<ScoredDocument> scoredDocs =
+    			ranker.runQuery(processedQuery, cgiArgs._numResults);
+    	StringBuffer response = new StringBuffer();
+    	switch (cgiArgs._outputFormat) {
+    	case TEXT:
+    		constructTextOutput(scoredDocs, response);
+    		break;
+    	case HTML:
+    		// @CS2580: Plug in your HTML output
+    		break;
+    	default:
+    		// nothing
+    	}
+    
     respondWithMsg(exchange, response.toString());
     System.out.println("Finished query: " + cgiArgs._query);
+  }
+    else if (uriPath.equals("/prf"))
+    {	System.out.println("Query: " + uriQuery);
+
+	// Process the CGI arguments.
+	CgiArguments cgiArgs = new CgiArguments(uriQuery);
+	if (cgiArgs._query.isEmpty()) {
+		respondWithMsg(exchange, "No query is given!");
+	}
+
+	// Create the ranker.
+	Ranker ranker = Ranker.Factory.getRankerByArguments(
+			cgiArgs, SearchEngine.OPTIONS, _indexer);
+	if (ranker == null) 
+	{
+		respondWithMsg(exchange,
+				"Ranker " + cgiArgs._rankerType.toString() + " is not valid!");
+	}
+
+	// Processing the query.
+	Query processedQuery = new Query(cgiArgs._query);
+	processedQuery.processQuery();
+
+
+	// Ranking.
+	Vector<ScoredDocument> scoredDocs =
+			ranker.runQuery(processedQuery, cgiArgs._numDocs);
+	
+	// Need a method that retrieves terms (scoreddocs, numterms)
+	
+	StringBuffer response = new StringBuffer();
+	switch (cgiArgs._outputFormat) {
+	case TEXT:
+		constructTextOutput(scoredDocs, response);
+		break;
+	case HTML:
+		// @CS2580: Plug in your HTML output
+		break;
+	default:
+		// nothing
+	}
+
+respondWithMsg(exchange, response.toString());
+System.out.println("Finished query: " + cgiArgs._query);
+
+    	
+    }
   }
 }
 
