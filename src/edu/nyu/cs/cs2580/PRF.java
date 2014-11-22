@@ -44,7 +44,6 @@ public class PRF {
 		Vector<ScoredTerms> scoreTerms = new Vector<ScoredTerms>();
 		for (int keys:WordMap.keySet())
 		{
-			
 			String name = dict.inverse().get(keys);
 			double scor = ((double) WordMap.get(keys))/Total;
 			ScoredTerms scoreTs = new ScoredTerms(new Terms(name), scor);
@@ -53,13 +52,8 @@ public class PRF {
 	
 		}
 			
-		//Collections.sort(scoreTerms, Collections.reverseOrder());
-			
-		for ( i =0; i< scoreTerms.size(); i++)
-		{
-			System.out.println(scoreTerms.get(i).get_term().getName());
-		}
-		System.out.println(scoreTerms.size());	
+		Collections.sort(scoreTerms, Collections.reverseOrder());
+	
 		return scoreTerms;
 		
 	}

@@ -239,14 +239,7 @@ class QueryHandler implements HttpHandler {
 	
 	
 	
-	Vector<ScoredTerms> scored = PRF.Relevance(scoredDocs,cgiArgs._numDocs, cgiArgs._numTerms, _indexer.getDict()); 
-	System.out.println("Back from prf");
-	System.out.println(scored.size());
-	
-	for (int i =0; i< scored.size(); i++)
-	{
-		System.out.println(scored.get(i).get_term().getName());
-	}	
+	Vector<ScoredTerms> scored = PRF.Relevance(scoredDocs,cgiArgs._numDocs, cgiArgs._numTerms, _indexer.getDict()); 	
 	StringBuffer response = new StringBuffer();
 	switch (cgiArgs._outputFormat) {
 	case TEXT:
