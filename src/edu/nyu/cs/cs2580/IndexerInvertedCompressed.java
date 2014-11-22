@@ -67,11 +67,14 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	    private HashMap<Integer,Vector<Integer>> _term_position = new HashMap<Integer,Vector<Integer>>();
 	    private HashMap<Integer,Vector<Integer>> _skip_pointer=new HashMap<Integer,Vector<Integer>>();
 	    private HashMap<Integer,Vector<Integer>> _term_list=new HashMap<Integer,Vector<Integer>>();
+
+      private StopWords _StopWords = null;
 	    
 	
   public IndexerInvertedCompressed(Options options) throws IOException, ClassNotFoundException {
     super(options);
     System.out.println("Using Indexer: " + this.getClass().getSimpleName());
+    _StopWords = new StopWords(options);
   }
 
   @Override
@@ -452,10 +455,6 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	    if (!_term_position.containsKey(idx)) {
 		    _term_position.put(idx, new Vector<Integer>() );
 	    }
-      
-      if (!document_tf.containsKey(idx)) {
-        document_tf.put(idx, 0);
-      }
 
 
 	    // add position of the term
@@ -468,7 +467,11 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	    
 	    // update stats
 	    _termCorpusFrequency.put(idx, _termCorpusFrequency.get(idx) + 1);
-      document_tf.put(idx, document_tf.get(idx) + 1);
+      if(!_StopWords.contains(token)) {
+        if (!document_tf.containsKey(idx))
+          document_tf.put(idx, 0);
+        document_tf.put(idx, document_tf.get(idx) + 1);
+      }
 	    ++_totalTermFrequency;
 
     }
