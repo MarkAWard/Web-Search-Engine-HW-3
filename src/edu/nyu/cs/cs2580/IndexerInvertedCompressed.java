@@ -454,7 +454,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	this._termCorpusFrequency = loaded._termCorpusFrequency;
 	this._termDocFrequency = loaded._termDocFrequency;
 	this.elias=loaded.elias;
-	System.out.println("pppp");
+	//System.out.println("pppp");
 	this._corpusAnalyzer=loaded._corpusAnalyzer;
 	//_corpusAnalyzer.load();
 	this._logMiner=loaded._logMiner;
@@ -694,9 +694,13 @@ public double NextPhrase(Query query, int docid, int pos) {
 	}
 	
 	if(incr == pos_vec.size())
+		{
+		System.out.println("Query:" + query._tokens);	
+		System.out.println("Positions: " + pos_vec);
 		return pos_vec.get(0);
+		}
 	
-	int next_p=Collections.max(pos_vec).intValue();
+	int next_p=Collections.max(pos_vec).intValue()-1;
 	
 	return NextPhrase(query, docid,next_p ); 
 	
@@ -725,7 +729,7 @@ private Double next_pos(String token, int docid, int pos) {
 	
 	// iterate through position list until you pass current position
 	int i = indx_start;
-	for(; Pt.get(i) < pos; i++);
+	for(; Pt.get(i) <= pos; i++);
 	
 	// return that next position
 	return 1.0 * Pt.get(i);
