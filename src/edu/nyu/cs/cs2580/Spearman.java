@@ -198,7 +198,7 @@ public class Spearman {
 		
 		System.out.println("Spearman Wiki: " + (1-((6*f1)/(n*(n*n-1)))) );
 		
-		return f1/(f2*f3);
+		return f1/(Math.sqrt(f2*f3));
 		//System.out.println(f1);
 		
 		//return 1-((6*f1)/(n*(n*n-1)));
