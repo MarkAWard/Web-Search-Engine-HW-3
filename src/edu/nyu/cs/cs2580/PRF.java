@@ -15,13 +15,13 @@ public class PRF {
 	private ScoredTerms scoreTs;
 	private Terms words;
 	
-	public Vector<ScoredTerms> Relevance(Vector<ScoredDocument> scoredDocs, int numTerms, biMap dict){
+	public Vector<ScoredTerms> Relevance(Vector<ScoredDocument> scoredDocs, int numTerms, BiMap dict){
 		Queue<ScoredTerms> rankQueue = new PriorityQueue<ScoredTerms>();
 		int i;
 		for (i=0; i<scoredDocs.size(); i++){
 			ScoredDocument docum = scoredDocs.get(i);
 			Document d =  docum.get_doc();
-			HashMap<Integer, Integer> wordHash = d.getTopWords(numTerms);
+			HashMap<Integer, Integer> wordHash = ((DocumentIndexed) d).getTopWords(numTerms);
 			
 			for (int j:wordHash.keySet())
 			{
@@ -45,6 +45,7 @@ public class PRF {
 			scoreTs.set_term(words);
 			double scor = ((double) WordMap.get(keys))/Total;
 			scoreTs.set_score(scor);
+			
 			scoreTerms.add(scoreTs);
 		}
 			

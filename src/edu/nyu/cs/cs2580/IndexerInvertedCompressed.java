@@ -346,7 +346,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	doc.setNumViews( ( (LogMinerNumviews)_logMiner).getNumviews(title.toLowerCase()));
 	doc.setPageRank( ( (CorpusAnalyzerPagerank )_corpusAnalyzer).getPagerank(title.toLowerCase()));
 	doc.setUrl(url);
-  doc.saveTopWords(doctf_bits.getFirst(), doctf_bits.getSecond());
+    doc.saveTopWords(doctf_bits.getFirst(), doctf_bits.getSecond());
 	((DocumentIndexed) doc).removeAll();
 	// add the document
 	_documents.add(doc); 
@@ -543,7 +543,9 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 
     }
 
-
+    public BiMap getDict(){
+    	return _dictionary;
+    }
 
     
     @Override
