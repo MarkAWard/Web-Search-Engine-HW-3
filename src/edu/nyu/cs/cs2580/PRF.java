@@ -31,7 +31,6 @@ public class PRF {
 				{
 					WordMap.put(j, wordHash.get(j));
 				}
-				Total += wordHash.get(j);
 			}
 		}
 			
@@ -45,7 +44,7 @@ public class PRF {
 		{
 			
 			String name = dict.inverse().get(keys);
-			double scor = ((double) WordMap.get(keys))/Total;
+			double scor = ((double) WordMap.get(keys));
 			ScoredTerms scoreTs = new ScoredTerms(new Terms(name), scor);
 			scoreTerms.add(scoreTs);
 			
@@ -53,12 +52,17 @@ public class PRF {
 			if(numTerms<=0)
 				break;
 	
-	
 		}
+		
+		
 			
 		Collections.sort(scoreTerms, Collections.reverseOrder());
 	
+		for(i=0;i<scoreTerms.size();i++)
+			Total+= scoreTerms.get(i).get_score();
 		
+		for(i=0;i<scoreTerms.size();i++)
+			scoreTerms.get(i).set_score(scoreTerms.get(i).get_score()/Total);
 		
 		return scoreTerms;
 		
