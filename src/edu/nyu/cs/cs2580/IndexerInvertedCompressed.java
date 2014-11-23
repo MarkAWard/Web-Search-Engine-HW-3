@@ -29,7 +29,7 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
  */
 public class IndexerInvertedCompressed extends Indexer implements Serializable {
 
-  public class Tuple<T, R> {
+  public static class Tuple<T, R> {
     private T first;
     private R second;
 
@@ -497,6 +497,7 @@ private void processDocument(String content) {
 
       Comparator< Tuple<Integer, Integer>> comparator = new Comparator<Tuple<Integer, Integer>>() {
         public int compare(Tuple<Integer, Integer> tupleA, Tuple<Integer, Integer> tupleB) {
+            // tupleB then tuple A to do descending order
             return tupleB.getSecond().compareTo(tupleA.getSecond());
         }
       };
