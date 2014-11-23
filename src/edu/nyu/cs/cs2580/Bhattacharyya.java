@@ -1,11 +1,7 @@
 package edu.nyu.cs.cs2580;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
@@ -34,6 +30,7 @@ public class Bhattacharyya {
 			
 		}
 	}
+	@SuppressWarnings("resource")
 	private static void query_similarity() throws IOException
 	{
 		
@@ -48,6 +45,7 @@ public class Bhattacharyya {
 			paths.add(s.next());
 			s.close();
 		}
+		br1.close();
 		
 		Double similarity;
 		
@@ -70,16 +68,13 @@ public class Bhattacharyya {
 
 
 
+	@SuppressWarnings("resource")
 	private static Double calculate_Bhattacharyya_coff(String f1,String f2) throws IOException
 	{
 		Double beta=0.0;
 		BufferedReader br1= new BufferedReader(new FileReader(f1));
 		BufferedReader br2= new BufferedReader(new FileReader(f2));
 		
-		String term1=null;
-		Double prob1=null;
-		String term2=null;
-		Double prob2=null;
 		
 		String line1=null;
 		String line2=null;
@@ -88,6 +83,11 @@ public class Bhattacharyya {
 		Scanner s2 = null;
 		
 		
+		Vector<String>terms1=new Vector<String>();
+		Vector<String>terms2=new Vector<String>();
+		Vector<Double>probs1=new Vector<Double>();
+		Vector<Double>probs2=new Vector<Double>();
+		
 		while(((line1=br1.readLine())!=null)&&(line2=br2.readLine())!=null)
 		{
 			
@@ -95,13 +95,22 @@ public class Bhattacharyya {
 			s2= new Scanner(line2).useDelimiter("\t");
 			
 			
-			term1=s1.next();
-			prob1=s1.nextDouble();
+			terms1.add(s1.next());
+			probs1.add(s1.nextDouble());
 			
-			term2=s2.next();
-			prob2=s2.nextDouble();
+			terms2.add(s2.next());
+			probs2.add(s2.nextDouble());
 			
-			beta= beta + Math.sqrt(prob1*prob2);
+		}
+		for(int i=0;i<terms1.size();i++)
+		{
+			for(int j=0;j<terms2.size();j++)
+			{
+				if(terms1.get(i).equals(terms2.get(j)))
+				{
+					beta += Math.sqrt(probs1.get(i)*probs2.get(j));
+				}
+			}
 			
 		}
 		
