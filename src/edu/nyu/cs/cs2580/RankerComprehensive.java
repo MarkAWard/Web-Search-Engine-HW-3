@@ -98,8 +98,10 @@ public class RankerComprehensive extends Ranker {
 	private ScoredDocument scoreDocument(Query query, Document document) {
 		double title_score = runquery_title(query, document);
 	    double cosine_score = runquery_cosine(query, document);
+	    double pagerank_score = document.getPageRank();
+	    double numviews_score = (double) document.getNumViews();
 
-	    double score = title_score + cosine_score;
+	    double score = title_score + cosine_score + pagerank_score + numviews_score;
 
 	    return new ScoredDocument(document, score);
 	}

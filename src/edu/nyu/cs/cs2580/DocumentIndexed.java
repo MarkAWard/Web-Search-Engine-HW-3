@@ -106,7 +106,6 @@ public class DocumentIndexed extends Document implements Serializable {
 
 
 	private Vector<Integer> Elias_decode(BitSet b) {
-		 
 		 int start = 0;
 		 int end = 0;
 		 int first_zero;

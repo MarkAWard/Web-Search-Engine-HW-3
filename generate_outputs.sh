@@ -19,7 +19,7 @@ while read q ; do
     	echo "Creating file... $FILE"
     	touch $FILE
 	fi
-	curl "http://localhost:25808/prf?query=$q&ranker=$RANKER&numdocs=10&numterms=5" >> $FILE
+	curl "http://localhost:25808/prf?query=$q&ranker=$RANKER&numdocs=30&numterms=20" >> $FILE
     if [ ! -e $PRFFILE ]
     then
         echo "Creating file... $PRFFILE"
