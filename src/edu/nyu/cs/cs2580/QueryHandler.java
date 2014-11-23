@@ -134,7 +134,11 @@ class QueryHandler implements HttpHandler {
 
 
   private void constructTermOutput(Vector<ScoredTerms> terms, StringBuffer response) {
-	    for (ScoredTerms term : terms) {
+	  
+	  if(terms.size()==0)
+		  response.append("ERROR:404 No Document Found");
+	  
+	  for (ScoredTerms term : terms) {
 	      response.append(response.length() > 0 ? "\n" : "");
 	      response.append(term.asTextResult());
 	      
@@ -236,13 +240,8 @@ class QueryHandler implements HttpHandler {
 			ranker.runQuery(processedQuery, cgiArgs._numDocs);
 	
 	// Need a method that retrieves terms (scoreddocs, numterms)
-	Vector<ScoredTerms> scored = PRF.Relevance(scoredDocs,cgiArgs._numDocs, cgiArgs._numTerms, _indexer.getDict()); 
-	System.out.println("Back from prf");
-	System.out.println(scored.size());
-	for (int i =0; i< scored.size(); i++)
-	{
-		System.out.println(scored.get(i).get_term().getName());
-	}	
+	
+	Vector<ScoredTerms> scored = PRF.Relevance(scoredDocs,cgiArgs._numDocs, cgiArgs._numTerms, _indexer.getDict()); 	
 	StringBuffer response = new StringBuffer();
 	switch (cgiArgs._outputFormat) {
 	case TEXT:

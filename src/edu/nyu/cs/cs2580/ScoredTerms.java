@@ -19,6 +19,8 @@ class ScoredTerms implements Comparable<ScoredTerms>{
 	@Override
 	public int compareTo(ScoredTerms t) {
 
+
+		
 		if (this._score == t._score)
 			return 0;
 		else

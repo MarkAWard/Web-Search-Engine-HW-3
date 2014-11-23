@@ -1,28 +1,24 @@
 package edu.nyu.cs.cs2580;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Vector;
 
 import com.google.common.collect.HashBiMap;
 
 public class PRF {
-	private static HashMap<Integer, Integer> WordMap = new HashMap<Integer, Integer>();
-	private static int Total = 0;
-	private static Vector<ScoredTerms> scoreTerms = new Vector<ScoredTerms>();
-
 	
+		
 	public static Vector<ScoredTerms> Relevance(Vector<ScoredDocument> scoredDocs,int numdocs, int numTerms, HashBiMap<String,Integer> dict){
-		Queue<ScoredTerms> rankQueue = new PriorityQueue<ScoredTerms>();
 		int i;
+		int Total=0;
+		HashMap<Integer, Integer> WordMap = new HashMap<Integer, Integer>();
+		numdocs= Math.min(numdocs, scoredDocs.size());
 		for (i=0; i<numdocs; i++){
 			ScoredDocument docum = scoredDocs.get(i);
 			Document d =  docum.get_doc();
 			HashMap<Integer, Integer> wordHash = ((DocumentIndexed) d).getTopWords(numTerms);
+			
 			
 			for (int j:wordHash.keySet())
 			{
@@ -35,29 +31,39 @@ public class PRF {
 				{
 					WordMap.put(j, wordHash.get(j));
 				}
-				Total += wordHash.get(j);
 			}
 		}
 			
-		Terms words = new Terms();
-		ScoredTerms scoreTs = new ScoredTerms(words, 0.0);
-			
+		
+		
+		Vector<ScoredTerms> scoreTerms = new Vector<ScoredTerms>();
+		
+		
+		
 		for (int keys:WordMap.keySet())
 		{
 			
 			String name = dict.inverse().get(keys);
-			words.setName(name);
-			//System.out.println(name);
-			scoreTs.set_term(words);
-			double scor = ((double) WordMap.get(keys))/Total;
-			scoreTs.set_score(scor);
+			double scor = ((double) WordMap.get(keys));
+			ScoredTerms scoreTs = new ScoredTerms(new Terms(name), scor);
 			scoreTerms.add(scoreTs);
-			System.out.println(scoreTs.get_term().getName());
+			
+			numTerms--;
+			if(numTerms<=0)
+				break;
+	
 		}
+		
+		
 			
-			Collections.sort(scoreTerms, Collections.reverseOrder());
-			
-		System.out.println(scoreTerms.size());		
+		Collections.sort(scoreTerms, Collections.reverseOrder());
+	
+		for(i=0;i<scoreTerms.size();i++)
+			Total+= scoreTerms.get(i).get_score();
+		
+		for(i=0;i<scoreTerms.size();i++)
+			scoreTerms.get(i).set_score(scoreTerms.get(i).get_score()/Total);
+		
 		return scoreTerms;
 		
 	}

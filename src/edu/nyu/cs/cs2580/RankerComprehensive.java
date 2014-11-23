@@ -27,9 +27,6 @@ public class RankerComprehensive extends Ranker {
 	
 	  Queue<ScoredDocument> rankQueue = new PriorityQueue<ScoredDocument>();
 	  
-	    int docid = -1;
-	    
-	    
 	    QueryPhrase qp=new QueryPhrase(query._raw);
 	    qp.processQuery();
 	    
@@ -86,8 +83,6 @@ public class RankerComprehensive extends Ranker {
 	      if (rankQueue.size() > numResults) {
 	        rankQueue.poll();
 	      }
-	      docid = i._docid;
-	      
 	      i = _indexer.nextDoc(query,i._docid);
 	    }
 
