@@ -10,6 +10,10 @@ import edu.nyu.cs.cs2580.SearchEngine.Options;
 
 public class StopWords implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6420210487534560806L;
 	private HashSet<String> _stopwords = new HashSet<String>();
 
 	public StopWords(Options options) throws IOException {

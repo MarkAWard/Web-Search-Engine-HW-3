@@ -2,7 +2,7 @@
 PRF=./prf/
 OUTPUT=qsim.tsv
 PREFIX=prf-
-RANKER="conjunctive"
+RANKER="FAVORITE"
 SUFFIX=.tsv
 PRFFILE=prf.tsv
 

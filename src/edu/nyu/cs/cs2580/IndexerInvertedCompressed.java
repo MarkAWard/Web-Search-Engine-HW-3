@@ -17,12 +17,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.ArrayList;
 
-import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import edu.nyu.cs.cs2580.SearchEngine.Options;
@@ -86,7 +83,6 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
       System.out.println("Constructing index documents in: " + corpusDir);
 
       final File Dir = new File(corpusDir);
-      int n_doc = 0;
       for (final File fileEntry : Dir.listFiles()) {
 	  if ( !fileEntry.isDirectory() ) {
 	      
@@ -105,8 +101,6 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 			  line = DocReader.createFileInput(line);
 			  processDocument(line);
 			  _term_position.clear();
-			  
-			  n_doc++;
 		      }
 		  } 
 		  finally {
@@ -116,7 +110,6 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	      else {
 		  //System.out.println(n_doc + "   " + fileEntry.getName());
 		  
-		  n_doc++;
 		  String nextDoc = DocReader.createFileInput(fileEntry);
 		  processDocument(nextDoc);
 		  
@@ -323,7 +316,8 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	return skip;
     }
     
-  private void processDocument(String content) {
+  @SuppressWarnings("resource")
+private void processDocument(String content) {
 	// TODO Auto-generated method stub
 	
 	Scanner s = new Scanner(content).useDelimiter("\t");
@@ -337,9 +331,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	document_tf = readTermVector(s.next(), uniqueTerms);
   Tuple<BitSet, Integer> doctf_bits = convertToBitSet(document_tf, _options._keepTerms);
 	
-	// get number of views
-	int numViews = Integer.parseInt(s.next());
-	//System.out.println(numViews);
+	Integer.parseInt(s.next());
 
 	String url = s.next();
 	
@@ -395,34 +387,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	
     }
   
-    private Vector<Integer> delta_encode(Vector<Integer> positions,int idx) {
-		// TODO Auto-generated method stub
-		
-    	int last=0;
-    	int current;
-    	
-    	for (int i = 0; i < positions.size(); i++)
-        {
-             current = positions.get(i);
-             
-            if( positions.get(i)-last<0)
-            {
-            	//System.out.println(positions.get(i)+ " "+ last + " "+ positions);
-            	
-            	for(String l:_dictionary.keySet())
-            	{
-            		if(_dictionary.get(l).equals(idx))
-            			System.out.println(l);
-            	}
-            }	
-            positions.set(i, positions.get(i)-last);
-            last = current;
-        }
-    
-    	return positions;
-	}
-
-	private HashMap<Integer, Integer> readTermVector(String content, Set <Integer> uniques) {
+    private HashMap<Integer, Integer> readTermVector(String content, Set <Integer> uniques) {
 	Scanner s = new Scanner(content);  // Uses white space by default.
 	int pos = -1;
 	Vector<Integer> positions = new Vector<Integer>();
@@ -476,7 +441,7 @@ public class IndexerInvertedCompressed extends Indexer implements Serializable {
 	    ++_totalTermFrequency;
 
     }
-
+	s.close();
     return document_tf;
   }
     
